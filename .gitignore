@@ -1,4 +1,5 @@
 .gradle/*
 .idea/*
+.idea/vcs.xml
 build/*
 out/*
