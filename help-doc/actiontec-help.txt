@@ -1,0 +1,71 @@
+3450 <addr> [ <value> ]				  														-- Read/write 3450 register
+arp									  														-- Show arp 
+tableautoupdate <addr> <start_hour> <end_hour>												-- Check and update firmware on an hourly schedule.	The update will pick a random time between start_hour and end_hour (0-23) and check for an update once per day
+bootimage [0|1]						  														-- Force boot image to 0 or 1
+cli-disable <all|<cmd> >				 													-- Disable access to cli commands. "all" disables all commands except cli-enable. cli-enable must be disabled by specifying it explicitly
+cli-enable <cmd>						 													-- Enable access to cli commands
+DCAP									 													-- DCAP commands:DCAP.02, GCAP.03,etc
+dump [addr]							  														-- Dump memory
+dir									  														-- Directory listing
+echo [string]																				-- Write [string] to output
+eport-get-link						   														-- Get link status
+eport-get-stats [ reset ]																	-- Get ether stats
+eport-set-mode <0-12>																		-- Set ethernet mux control
+eport-gphy-set-speed [ auto ] | [<10|100|1000> <full|half>]									-- Set GPHY to autonegotiate/10/100/1000MBps and full or half duplex
+eport-gphy-set-pause <tx|rx|txrx|off>														-- Set GPHY pause frame mode which is advertised during auto negotiation
+eport-mdio [-d <dev_addr>] <addr> [ [<bithigh> <bitlow>] <value> ]							-- Read/write MDIO register
+flash-get-id							 													-- Get flash id
+flash-dump [ addr ]					  														-- Dump flash
+flash-erase <offset>					 													-- Erase a flash sector
+flash-write-test						 													-- Write a pattern to flash
+GCAP									 													-- GCAP commands:GCAP.01, GCAP.02,etc
+gpio-mode																					-- GPIO Mode to control power and MoCA LEDs
+help									 													-- Display help
+http-cmd-disable <all|<cmd> >																-- Disable access to commands over http. "all" disables all commands except http-cmd-enable. http-cmd-enable must be disabled by specifying it explicitly
+http-cmd-enable <cmd>																		-- Enable access to commands over http
+http-disable							 													-- Prevent starting of web server
+http-enable							  														-- Allow starting of web server
+http-mmp-disable						 													-- Prevent mmp commands
+http-mmp-enable						  														-- Allow mmp commands
+http-port [ port_number ]																	-- Get/Set the HTTP port number
+http-update-disable					  														-- Prevent software update over HTTP
+http-update-enable					   														-- Allow software update over HTTP
+ifconfig [ -stats ] | [ auto ] | [linklocal] | [<ipaddr> [<netmask> [<gw>]]]   				-- Display or configure IP address
+l1									   														-- L1 Interrupts
+l2									   														-- L2 Interrupts
+memf <addr> <bitlow> <bithigh> <value>   													-- Write register field
+mem <addr> [ <value> ]				   														-- Read/write memory
+ping <ip>																					-- Ping host
+moca-buffers							 													-- Display MoCA OS buffer stats
+mocap																						-- Moca stats and settings
+ntp <ip>								 													-- NTP server address
+nvram-avs [ <0|1> ]					  														-- Get/Set AVS Enable setting
+nvram-custom [B|b|S|s|d] [<data>]															-- Get/Set custom data
+nvram-erase [all]																			-- Erase all NVRAM info except MAC Address.	"all" Erase all NVRAM info
+nvram-info							   														-- Get NVRAM info
+nvram-mac [ <mac-addr> ]				 													-- Get/Set MAC address
+nvram-moca							   														-- Get MOCA NVRAM settings
+nvram-runonce [ <0|1> ]				  														-- Get/Set runonce setting
+quiet <ON|OFF>						   														-- Disable/Enable command line echo
+rd-button-enable <0|1>				   														-- Enable Restore Default Button
+rd-button-time <seconds>				 													-- Get/Set the hold time for the Restore Default Button
+reboot								   														-- Reset the board
+reset-button-enable <0|1>																	-- Enable Reset Button
+rfswitch <H|L>						   														-- Set RF switch to High (1125MHz+) or Low (5-1000MHz)
+script <filename>																			-- Run script
+spi-get-config						   														-- Print SPI configuration
+spi-set-baud <rate>					  														-- Set spi clk rate
+spi-set-chipsel <0|1>																		-- Set spi chip select
+spi-set-cpha <0|1>					   														-- Set spi clk phase
+spi-set-cpol <0|1>					   														-- Set spi clk polarity
+spi-set-dtl-and-dsclk <0|1>			  														-- Set spi user dtl and dsclk mode
+spi-set-polled <0|1>					 													-- Set spi polled/intr mode
+spi-xfer [bytes-out] [x<num_bytes>]	  														-- Transfer bytes on SPI line
+tasks																						-- Print task info
+temp									 													-- Print die temperature
+tftp <server> [<filename> [<offset>]]														-- Tftp file into flash
+time									 													-- Display current time
+tpcap ...																					-- Test-port Capture
+version								  														-- Display flash image version
+
+(.*?)[\s{2,}|\t]+--\s?(.*)
