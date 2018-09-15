@@ -1,0 +1,2367 @@
+adc_mode
+{
+	ADC clock mode
+	
+	mocap set --adc_mode <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = normal mode 
+	1 = special mode
+	Default:
+	0 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+aes_exchange_interval
+{
+	AES PMK and TEK intervals time. This configuration will take effect only after the next key change.
+	
+	mocap set --aes_exchange_interval <uint32 msec>
+	msec:
+	=====
+	
+	Values:
+	Units of msec 
+	Default is 7 hours
+	Default:
+	25200000 
+	Minimum:
+	20000 
+}
+
+aes_mm_key
+{
+	AES MAC Management Key
+	
+	mocap set --aes_mm_key <options>
+	options:
+	   val   <uint32 value> <index> <end index (optional)>
+}
+
+aes_pm_key
+{
+	AES Privacy Management Key
+	
+	mocap set --aes_pm_key <options>
+	options:
+	   val   <uint32 value> <index> <end index (optional)>
+}
+
+aes_pmk_initial_key
+{
+	128-bit Privacy Management Key Initial.
+	
+	mocap set --aes_pmk_initial_key <options>
+	options:
+	   val   <uint32 value> <index> <end index (optional)>
+}
+
+amp_reg
+{
+	Read and write registers in the PA/LNA 345x chip.
+	
+	mocap set --amp_reg <options>
+	options:
+	   value   <uint32>
+	   addr    <uint32>
+}
+
+amp_type
+{
+	Specifies the revision of PA/LNA. This setting is used if mocad cannotauto-detect (e.g. out-of-date bmoca kernel module)
+	
+	mocap set --amp_type <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 -- 3450
+	1 -- 3451
+	Default:
+	1 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+arpl_th_100
+{
+	Aggregate Received Power Level (ARPL) Threshold for 100 MHz PHY transmissions which MUST be specified from 0 to 65 dBm in steps of 1 dB to be used with the SAPM feature. 
+	See also: sapm_table_100
+	
+	mocap set --arpl_th_100 <int32 arpl>
+	arpl:
+	=====
+	
+	Values:
+	Units of dBm
+	Default:
+	-50 
+	Minimum:
+	-65 
+	Maximum:
+	0 
+}
+
+arpl_th_50
+{
+	Aggregate Received Power Level (ARPL) Threshold for 50 MHz (MoCA 1.1) transmissionswhich MUST be specified from 0 to 65 dBm in steps of 1 dB to be used with the SAPM feature. 
+	See also: sapm_table_50
+	
+	mocap set --arpl_th_50 <int32 arpl>
+	arpl:
+	=====
+	
+	Values:
+	Units of dBm
+	Default:
+	-50 
+	Minimum:
+	-65 
+	Maximum:
+	0 
+}
+
+assertText
+{
+	
+	mocap set --assertText <uint32 assertText>
+	assertText:
+	===========
+	Default:
+	0 
+}
+
+beacon_channel_set
+{
+	This is part of a user command to change channel (!)This IE is the first step in Channel Selection process.This IE will flag the MoCA Core to prepare for Channel Selection.The process of CS will be initiated by a user CLI/API, and the host function will do:1) Send down this IE MMP message.2) start a MR transaction using the MR_REQUEST command3) After the success of [2] (receive of MR_RESPONSE OK trap) this Assigned Channel number should be stored in NV init_param BEACON_CHANNEL field for future reboots.
+	
+	mocap set --beacon_channel_set <uint32 channel>
+	channel:
+	========
+}
+
+beacon_pwr_reduction
+{
+	Amount of power reduction multiple by 3 for beacons vs other transmissions. 
+	Beacon power reduction must be disabled for Bands E and F.
+	
+	mocap set --beacon_pwr_reduction <uint32 val>
+	val:
+	====
+	
+	Values:
+	Value is in 3dB units
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	5 
+	0 (BAND_E)
+	0 (BAND_F)
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+beacon_pwr_reduction_en
+{
+	Enable/Disable BEACON_PWR_REDUCTION. 
+	Beacon power reduction must be disabled for Bands E and F.
+	
+	mocap set --beacon_pwr_reduction_en <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	0 (6816)
+	0 (BAND_E)
+	0 (BAND_F)
+	1 (7xxx)
+	Minimum:
+	0 
+	Maximum:
+	1 
+	0 (BAND_E)
+	0 (BAND_F)
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+bo_mode
+{
+	This flag enables two modes of operation, introducing tradeoff between fast Back Off convergence and better noise robustness of the system.
+	
+	mocap set --bo_mode <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Fast B.O. convergence 
+	1 = slow convergence to final Back Off. Better noise immunity during Admission
+	Default:
+	0 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+bonding
+{
+	Enables bonding on chips that support it.
+	
+	mocap set --bonding <uint32 val>
+	val:
+	====
+	Default:
+	0 
+	0 (BONDING_SUPPORTED)
+	Minimum:
+	0 
+	Maximum:
+	0 
+	0 (BAND_D_LOW)
+	1 (BONDING_SUPPORTED)
+	Warning: Command failed for Option '--bonding'.
+	Note: Parameter will take effect after next MoCA core initialization.
+	mocap                                    -- Moca stats and settings
+}
+
+brcm_bonding_seed
+{
+	Configures to use primary channel seed on secondary channel as well.
+	
+	mocap set --brcm_bonding_seed <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Normal operation. 
+	1 = Switch automatically between primary and secondary seed when a mismatch is detected. 
+	2 = Force primary seed on secondary channel.
+	Default:
+	0 
+	0 (BONDING_SUPPORTED)
+	Minimum:
+	0 
+	Maximum:
+	0 
+	2 (BONDING_SUPPORTED)
+	Warning: Command failed for Option '--brcm_bonding_seed'.
+	Note: Parameter will take effect after next MoCA core initialization.
+	mocap                                    -- Moca stats and settings
+}
+
+brcmtag_enable
+{
+	Enable BRCM tag usage on packets from switch
+	
+	mocap set --brcmtag_enable <uint32 enable>
+	enable:
+	=======
+	
+	Values:
+	Enable or Disable BRCM tag processing on packets from switch
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	1 
+}
+
+bw
+{
+	Configure the MoCA interface to operate using a 50MHz or 100MHz bandwidth.
+	
+	mocap set --bandwidth <uint32 bandwidth>
+	bandwidth:
+	==========
+	
+	Values:
+	0-50MHz or 1-100MHz
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	1 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+c4_moca20_en
+{
+	Enables MoCA 2.0 also on C4 band.
+	
+	mocap set --c4_moca20_en <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Disable MoCA 2.0 on C4 band.
+	1 = Enable MoCA 2.0 also on C4 band.
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	1 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+cap_phy_rate_en
+{
+	Enables capping of target phy rate and SNR base margin for channels {1400 MHz}. Relevant for bonding mode only.
+	
+	mocap set --cap_phy_rate_en <uint32 bool_val>
+	bool_val:
+	=========
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	0 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+cap_snr_base_margin
+{
+	Lower bound of LDPC SNR base margin at capped channels {1400 MHz}. Relevant for bonding mode only.
+	
+	mocap set --cap_snr_base_margin <uint32 val>
+	val:
+	====
+	
+	Values:
+	Units of 1/256 dB
+	Default:
+	400 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+cap_target_phy_rate
+{
+	Upper bound of target phy rate at capped channels {1400 MHz}. Relevant for bonding mode only.
+	
+	mocap set --cap_target_phy_rate <uint32 val>
+	val:
+	====
+	
+	Values:
+	Units of Mbps
+	Default:
+	670 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+cir_prints
+{
+	Enabling or disabling the CIR prints. 
+	To enable these prints moca_core_trace_enable must also be set to 1.
+	
+	mocap set --cir_prints <uint32 bool_val>
+	bool_val:
+	=========
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	0 
+}
+
+cof
+{
+	Current operating frequency. This parameter sets the LOF for MoCA on the next MoCA start/restart without saving the frequency in NVRAM. This parameter has no 'get' function. The interface_status rf_channel field should be read to obtain the actual operating frequency. Once a link is established, this parameter will have no effect unless it is set again followed by a MoCA start/restart.
+	
+	mocap set --cof <uint32 val>
+	val:
+	====
+	
+	Values:
+	Operating frequency in MHz
+	Default:
+	0 
+}
+
+continuous_rx_mode_attn
+{
+	
+	mocap set --continuous_rx_mode_attn <int32 val>
+	val:
+	====
+	Default:
+	0 
+	Minimum:
+	-1 
+	Maximum:
+	63 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+ctx
+{
+	Ability to transmit in a constant power mode as defined by the spec. It is used only for lab testing. The transmit channel will be the LOF.
+	
+	mocap set --continuous_power_tx_mode <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Normal operation 
+	1 = Continuous power TX mode 
+	2 = Continuous RX mode 
+	5 = Continuous power TX mode Secondary (bonded chips only)
+	6 = Continuous power TX mode Bonded (bonded chips only)
+	7= Continuous power Standby mode
+	8= Continuous power down mode
+	Default:
+	0 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+ctxparms
+{
+	Continuous TX mode debug parameters
+	
+	mocap set --const_tx_params <options>
+	options:
+	   const_tx_sc1       <uint32>
+	   const_tx_sc2       <uint32>
+	   const_tx_band      <bits (format "w,x,y-z")>
+	   const_tx_submode   <uint32>
+}
+
+dont_start_moca
+{
+	This parameter is used to tell the MoCA Daemon not to boot the MoCA core upon start-up. The MoCA daemon will wait for this field to be set to 0 before startingthe MoCA core after it has been set to 1.
+	
+	mocap set --dont_start_moca <uint32 dont_start_moca>
+	dont_start_moca:
+	================
+	
+	Values:
+	0 = Start MoCA
+	1 = Don't start MoCA
+	Default:
+	0 
+}
+
+egr_mc_addr_filter
+{
+	Set Multicast MAC Address filtering entry.
+	
+	mocap set --egr_mc_addr_filter <options>
+	options:
+	   entryid   <uint32>
+	   valid     <uint32>
+	   addr      <macaddr, format xx:xx:xx:xx:xx:xx>
+}
+
+egr_mc_filter_en
+{
+	Enables/Disables Egress Eth MC Packet Filtering mode. 
+	When enabled, only the Eth MC packets with MAC Address that are match to an entry in the MC filter table are delivered through the GMII interface.
+	
+	mocap set --egr_mc_filter_en <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	0 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+en_capable
+{
+	
+	mocap set --en_capable <uint32 enable>
+	enable:
+	=======
+	Default:
+	1 
+}
+
+extra_rx_packets_per_qm
+{
+	A tuning parameter for the packets per second (PPS) optimizations
+	
+	mocap set --extra_rx_packets_per_qm <uint32 val>
+	val:
+	====
+	Default:
+	6 
+}
+
+fc_mode
+{
+	Set or get the flow control mode.
+	
+	mocap set --fc_mode <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 - Normal mode. The MoCA core will assert the external flow control lines only.
+	1 - Internal flow control mode. In addition to asserting the external flow control lines, the MoCA core will also limit the number of packets accepted into its queues on a per priority basis.
+	Default:
+	0 (FC_CAPABLE_CHIP)
+	1 
+	Minimum:
+	0 
+	Maximum:
+	1 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+filter_m2_data_wakeUp
+{
+	Force node to wake up
+	
+	mocap set --filter_m2_data_wakeUp <uint32 mode>
+	mode:
+	=====
+	
+	Values:
+	0 = OFF 
+	 1 = ON
+	Default:
+	0 
+}
+
+force_handoff
+{
+	Debug feature to force an NC handoff operation.
+	
+	mocap set --force_handoff <options>
+	options:
+	   nextBackup   <uint32>
+	   nextNc       <uint32>
+}
+
+freq_mask
+{
+	Bit mask for specifying which frequencies should be scanned during the listening phase of network search. Depending on the RF band of operation, the MSB of this parameter corresponds to the lowest frequency channel of the band. Each subsequent bit of this parameter represents the next highest 25MHz channel. The base channels for each RF band are as follows: 
+	Band D-Low : 46 (1150 MHz) 
+	Band D-High: 56 (1400 MHz) 
+	Band Ext-D : 46 (1150 MHz) 
+	Band C4 : 40 (1000 MHz) 
+	Band E : 20 ( 500 MHz) 
+	Band F : 27 ( 675 MHz) 
+	Band H : 39 ( 975 MHz)
+	
+	mocap set --listening_freq_mask <uint32 val>
+	val:
+	====
+	Default:
+	0xFFFFFFFF 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+freq_shift
+{
+	XtalPull test for midRF CTP, used by ICAP.110.This configuration is relevant only after TX continuous mode is activated, and the host should prevent sending it in regular mode.
+	
+	mocap set --freq_shift <uint32 direction>
+	direction:
+	==========
+	Default:
+	0 
+}
+
+gmii_trap_header
+{
+	GMII Trap Header.
+	
+	This structure allows the host to configure the GMII trap buffer Ethernet, IP and UDP headers. When the destination MACaddress is non-zero, the firmware will send certain traps over the GMII interface using the specified header. 
+	
+	The host is responsible for ensuring that the header contains valid fields. The firmware will update the length fieldsand checksum values. 
+	
+	To disable GMII traps, the host should set this structure to all zeroes.
+	
+	mocap set --gmii_trap_header <options>
+	options:
+	   ttl           <uint8>
+	   src_ip_addr   <uint8 value> <index> <end index (optional)>
+	   id            <uint16>
+	   dscp_ecn      <uint8>
+	   src_port      <uint16>
+	   dest_mac      <uint8 value> <index> <end index (optional)>
+	   dst_port      <uint16>
+	   prot          <uint8>
+	   source_mac    <uint8 value> <index> <end index (optional)>
+	   ip_checksum   <uint16>
+	   dst_ip_addr   <uint8 value> <index> <end index (optional)>
+}
+
+host_qos
+{
+	Controls whether or not mocad will automatically create filters for prioritizing MoCA traffic, including PQOS traffic.
+	
+	mocap set --host_qos <uint32 enable>
+	enable:
+	=======
+	
+	Values:
+	0 = mocad will not create filters 
+	1 = mocad will create filters
+	Default:
+	1 (FC_CAPABLE_CHIP)
+	0 
+}
+
+if_access_en
+{
+	Configures the firmware to use the if_access_table when decidingwhether or not to admit nodes to the network. This setting will only havean effect when the self node is the NC. Nodes currently joined to the network will not be affected, only new nodes attempting to join the networkwill be affected.
+	
+	mocap set --if_access_en <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	1 
+}
+
+if_access_table
+{
+	When if_access_en is enabled and this node is the NC, only nodeswith MAC addresses that are listed in this table will be allowed to jointhe network.
+	
+	mocap set --if_access_table <options>
+	options:
+	   mac_addr   <macaddr value> <index> <end index (optional)>
+}
+
+impedance_mode_bonding
+{
+	Bonding impedance setting - Bonding[9..11], Secondary[4..7], Primary[0..3]
+	||        Bonding        ||       Phy1 burst        ||         Phy0 burst      ||
+	||   Phy 1   |   Phy 0   ||   Phy 1   |     Phy 0   ||     Phy 1   |   Phy 0   ||
+	||c1_on|c0_on|c1_on|c0_on||c1_on|c0_on|c1_off|c0_off||c1_off|c0_off|c1_on|c0_on||
+	
+	mocap set --impedance_mode_bonding <uint32 val>
+	val:
+	====
+	Default:
+	0 
+	0x3C3 (BONDING_SUPPORTED)
+	Minimum:
+	0 
+	Maximum:
+	0 
+	0xFFF (BONDING_SUPPORTED)
+	Warning: Command failed for Option '--impedance_mode_bonding'.
+	Note: Parameter will take effect after next MoCA core initialization.
+	mocap                                    -- Moca stats and settings
+}
+
+lab_iq_diagram_set
+{
+	Initiating the production of IQ constellation diagram in the MoCA core, for RX bursts.
+	
+	mocap set --lab_iq_diagram_set <options>
+	options:
+	   nodeid       <uint32>
+	   bursttype    <uint32>
+	   acmtsymnum   <uint32>
+}
+
+lab_mode
+{
+	Turning on the lab mode will enable SNR , I/Q and CIR graphs in BBS.
+	
+	mocap set --lab_mode <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 - normal mode
+	1 - lab mode
+	Default:
+	0 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+lab_register
+{
+	Reading or writing a register or a memory address by using the MoCA CPU.The input parameter is a 32 bits address.
+	
+	mocap set --lab_register <options>
+	options:
+	   len       <uint32>
+	   address   <uint32>
+	   value     <uint32 value> <index> <end index (optional)>
+}
+
+led_mode
+{
+	Configure the firmware to control the MoCA LED according to the rules described by the mode value.
+	
+	mocap set --led_mode <uint32 val>
+	val:
+	====
+	
+	Values:
+	Mode 0: 
+	- LED off when link is down 
+	- LED on when link is up 
+	- LED blinks when there is traffic 
+	
+	Mode 1: 
+	- LED off when MoCA is not running 
+	- LED on when MoCA is running 
+	- LED slow blinks when there is traffic, except in 6802 standalone mode 
+	
+	Mode 2: 
+	- LED off when MoCA is not running 
+	- LED slow blinks when MoCA is performing network search 
+	- LED on when link is up 
+	- LED blinks when there is traffic 
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	2 
+	1 (STANDALONE)
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+limit_traffic
+{
+	Limit traffic for extra power save mode.
+	
+	mocap set --limit_traffic <uint32 val>
+	val:
+	====
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	2 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+listening_duration
+{
+	The duration in milliseconds that should be spent listening for beacons on each channel during the network search listening phase.
+	
+	mocap set --listening_duration <uint32 val>
+	val:
+	====
+	Default:
+	1050 
+	Minimum:
+	100 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+lof
+{
+	Last Operation Frequency. RF frequency to which the MoCA interface was tuned when last operational.
+	(GCAP.8)
+	This field is used also for setting required frequency of operation, when not in Network Search mode.
+	
+	mocap set --lof <uint32 val>
+	val:
+	====
+	
+	Values:
+	Frequency in MHz 
+	
+	Band D: 1125 - 1625 
+	Band D-Low: 1125 - 1225 
+	Band D-High: 1350 - 1625 
+	Band E: 500 - 600 
+	Band F: 675 - 850 
+	Band C4: 1000 
+	Band H: 975 - 1025
+	Default:
+	0 
+	1150 (BAND_EX_D)
+	1150 (BAND_D_LOW)
+	1150 (BAND_GENERIC)
+	1400 (BAND_D_HIGH)
+	575 (BAND_E)
+	800 (BAND_F)
+	1000 (BAND_C4)
+	1000 (BAND_H)
+}
+
+lof_update
+{
+	This parameter controls whether the LOF is updated when joining a network. If set to 'enabled' the LOF will be updated to the channel of the network that this node is currently linked on. If set to 'disabled' the LOF will not be updated.
+	
+	mocap set --lof_update <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = disable 
+	1 = enable
+	Default:
+	1 
+	Minimum:
+	0 
+	Maximum:
+	1 
+}
+
+loopback_en
+{
+	}
+
+m1_tx_power_variation
+{
+	Set m1_tx_power_variation
+	
+	mocap set --m1_tx_power_variation <uint32 state>
+	state:
+	======
+	
+	Values:
+	0b000 - 0b110 Maximum additional possible variation of TX power of the Node in M1 Power State compared with M0 Power State (in dB)
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	6 
+}
+
+mac_addr
+{
+	Unique IDentifier (IEEE 48-bit Extended Unique Identifier) of a MoCA Node on the MoCA network. This MAC address is the MAC address of the ONT MoCA interface port.
+	
+	mocap set --mac_addr <options>
+	options:
+	   val   <macaddr, format xx:xx:xx:xx:xx:xx>
+}
+
+max_constellation
+{
+	Set/Get max constellation on all carriers in the receive from a specified node (GCAP.32).
+	
+	mocap set --max_constellation <options>
+	options:
+	   gcd_limit_100   <uint32>
+	   p2p_limit_100   <uint32>
+	   node_id         <uint32>
+	   gcd_limit_50    <uint32>
+	   p2p_limit_50    <uint32>
+}
+
+max_frame_size
+{
+	Maximum frame size allowed to be transmitted through the MoCA physical interface. Used for limiting aggregation.Note: the frame size includes payloads headers and CRC's.
+	
+	mocap set --max_frame_size <uint32 bytes>
+	bytes:
+	======
+	Default:
+	32768 
+	Minimum:
+	2048 
+	Maximum:
+	32768 
+}
+
+max_phy_rate
+{
+	The maximum PHY rate supported in non-turbo mode.
+	
+	mocap set --max_phy_rate <uint32 mbps>
+	mbps:
+	=====
+	
+	Values:
+	Units of Mbps
+	Default:
+	670 
+	630 (7425)
+}
+
+max_phy_rate_50M
+{
+	The maximum PHY rate supported in 50M.
+	
+	mocap set --max_phy_rate_50M <uint32 mbps>
+	mbps:
+	=====
+	
+	Values:
+	Units of Mbps
+	Default:
+	300 
+}
+
+max_phy_rate_turbo
+{
+	The maximum PHY rate supported in turbo mode.
+	
+	mocap set --max_phy_rate_turbo <uint32 mbps>
+	mbps:
+	=====
+	
+	Values:
+	Units of Mbps
+	Default:
+	670 
+	680 (7425)
+}
+
+max_pkt_aggr
+{
+	Max allowed packets for aggregated transmissions (enhanced GCAP.34)
+	
+	mocap set --max_pkt_aggr <uint32 pkts>
+	pkts:
+	=====
+	Default:
+	20 
+	Minimum:
+	1 
+	Maximum:
+	20 
+}
+
+max_pkt_aggr_bonding
+{
+	Max allowed packets for aggregated transmissions for bonding
+	
+	mocap set --max_pkt_aggr_bonding <uint32 pkts>
+	pkts:
+	=====
+	Default:
+	27 
+	Minimum:
+	1 
+	Maximum:
+	30 
+}
+
+max_transmit_time
+{
+	Maximum transmission time allowed to transmit a frame through the MoCA physical interface. Used for limiting aggregation
+	
+	mocap set --max_transmit_time <uint32 usec>
+	usec:
+	=====
+	
+	Values:
+	Value in uSec
+	Default:
+	400 
+	Minimum:
+	300 
+	Maximum:
+	1000 
+}
+
+max_tx_power
+{
+	Indicates the max transmitter power level allowed.
+	
+	mocap set --max_tx_power <int32 val>
+	val:
+	====
+	
+	Values:
+	[dBm]
+	Default:
+	3 
+	Minimum:
+	-31 
+	Maximum:
+	3 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+max_tx_power_tune
+{
+	tx power per frequency
+	
+	mocap set --max_tx_power_tune <options>
+	options:
+	   padding   <uint16>
+	   offset    <int8 value> <index> <end index (optional)>
+}
+
+max_tx_power_tune_sec_ch
+{
+	tx power per frequency
+	
+	mocap set --max_tx_power_tune_sec_ch <options>
+	options:
+	   padding   <uint16>
+	   offset    <int8 value> <index> <end index (optional)>
+}
+
+mcfilter_addentry
+{
+	Add Multicast MAC Address filtering entry.
+	
+	mocap set --mcfilter_addentry <options>
+	options:
+	   addr   <macaddr, format xx:xx:xx:xx:xx:xx>
+}
+
+mcfilter_clear_table
+{
+	Clear Multicast filtering table.
+	
+	mocap set --mcfilter_clear_table
+}
+
+mcfilter_delentry
+{
+	Delete Multicast MAC Address filtering entry.
+	
+	mocap set --mcfilter_delentry <options>
+	options:
+	   addr   <macaddr, format xx:xx:xx:xx:xx:xx>
+}
+
+mcfilter_enable
+{
+	Enables/Disables multicast Filter mode or enable on DFID only.
+	
+	mocap set --mcfilter_enable <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Disable 
+	1 = Enable 
+	2 = Enable on DFID only
+	Default:
+	0 
+}
+
+min_bw_alarm_threshold
+{
+	Indicates a user configured threshold for PHY link bandwidth between two nodes that will raise an alarm. This configurable threshold shouldn't be confused with a different alarm below a fixed threshold of 358 bits per symbol (~57Mbps), which is the minimum PHY rate to allow a connection between any two nodes, according to MoCA spec.
+	
+	mocap set --min_bw_alarm_threshold <uint32 mbps>
+	mbps:
+	=====
+	
+	Values:
+	0 = threshold disabled
+	otherwise, units are Mbps
+	Default:
+	100 
+	Minimum:
+	50 
+	Maximum:
+	3200 
+}
+
+mocad_forwarding_rx_mac
+{
+	Forward packets to mocad
+	
+	
+	mocap set --mocad_forwarding_rx_mac <macaddr mac_addr>
+	mac_addr:
+	=========
+	MAC address to filter on
+}
+
+mr_seq_num
+{
+	The sequence number used by the MR transaction.
+	
+	mocap set --mr_seq_num <uint32 val>
+	val:
+	====
+	
+	Values:
+	Any integer in the range of 0 to 0xFFFF
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	0xFFFF 
+}
+
+mtm_en
+{
+	Enable/Disable (manufacturing Test Mode)
+	
+	mocap set --mtm_en <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	0 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+multicast_mode
+{
+	Selecting a Mode of operation for MC. Normal mode is when the host has IGMP snooping ability. In CTP testing, the BC mode should be used.
+	
+	mocap set --multicast_mode <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 - Normal mode. Host updates the MC table according to IGMP snooping. Unknown MC will be limited to 15pps.
+	
+	Note for lab: Pay attention to set the MC table when working in this mode.
+	
+	1 - Broadcast mode. All MC are always transmitted as BC. No limitation of BW.
+	Default:
+	1 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+nc_heartbeat_interval
+{
+	NC hearbeat interval, in seconds
+	
+	mocap set --nc_heartbeat_interval <uint32 val>
+	val:
+	====
+	Default:
+	10 
+	Minimum:
+	1 
+	Maximum:
+	255 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+nc_listening_interval
+{
+	NC listening interval, units of Beacon interval BSI
+	
+	mocap set --nc_listening_interval <uint32 val>
+	val:
+	====
+	Default:
+	10 
+	Minimum:
+	1 
+	Maximum:
+	10 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+nc_mode
+{
+	Setting how the MoCA Core should behave during network admission: 
+	- Auto negotiate for NC 
+	- Always be the NC 
+	- Never be the NC.
+	
+	mocap set --nc_mode <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = auto negotiate for NC 
+	1 = always NC 
+	 2 = never NC 
+	Default:
+	0 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+no_rtt
+{
+	This parameter is used to disable RTT prints by turning off bit 7 of the verbose field.
+	
+	mocap set --no_rtt
+}
+
+nv_cal_clear
+{
+	Clear the NVRAM RF Calibration data. This will force the MoCA core to perform calibration upon the next initialization if NV Calibration is enabled (see nv_cal_enable).
+	
+	mocap set --nv_cal_clear
+}
+
+nv_cal_enable
+{
+	Enable the mechanism whereby the MoCA firmware will reuse RF calibration data and Probe II results from previous boots. The data is stored by the host for use on subsequent MoCA core boots. This mechanism decreases the MoCA firmware boot time.
+	
+	mocap set --nv_cal_enable <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	1 
+}
+
+ofdma_en
+{
+	Enable support for OFDMA PHY Frames
+	
+	mocap set --ofdma_en <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	1 
+	Minimum:
+	0 
+	Maximum:
+	1 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+ooo_lmo
+{
+	A Request for an Out-of-Order LMO to any node (GCAP.27)
+	
+	mocap set --ooo_lmo <uint32 node_id>
+	node_id:
+	========
+	
+	Values:
+	LMO Node ID
+	Minimum:
+	0 
+	Maximum:
+	15 
+	Warning: Command failed for Option '--ooo_lmo'.
+	mocap                                    -- Moca stats and settings
+}
+
+orr_en
+{
+	Controls whether or not Opportunistic Reservation Requests are to be used for MoCA 2.0 PQoS flows.
+	
+	mocap set --orr_en <uint32 enable>
+	enable:
+	=======
+	
+	Values:
+	0 = disabled 
+	1 = enabled
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	1 
+}
+
+otf_en
+{
+	Enables/Disables On The Fly calibration. 
+	This feature calibrates the Tx Power periodically, and is used for overcoming max power change in temperatures.
+	
+	mocap set --otf_en <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	0 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+password
+{
+	
+	mocap set --password <char_array password>
+	password[32]:
+	=============
+	The network password used to generate privacy keys. This string must be between 12 and 17 characters long with each character being a decimal number (0-9).
+	
+	Values:
+	Defaults: string 99999999988888888
+	password[0..8] = 0x39 
+	password[9..16] = 0x38 
+	Default:
+	0 
+}
+
+pause_fc_en
+{
+	Enable/Disable Pause Frame Flow Control for packets destined for the MoCA network, if available. Not all MoCA chips support Pause frames.
+	
+	mocap set --pause_fc_en <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	0 
+	1 (STANDALONE)
+	Minimum:
+	0 
+	Maximum:
+	1 
+}
+
+pco
+{
+	For a MoCA 2.0 network, this parameter specifies the frequency offset of the primary channel relative to the beacon channel.This parameter is relevant when the node is NC.
+	
+	mocap set --primary_ch_offset <int32 val>
+	val:
+	====
+	
+	Values:
+	Frequency offset in MHz. Valid values are -25, 0, +25. A setting of 1 instructs firmware to use the default setting based on LOF.
+	Default:
+	1 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+per_mode
+{
+	Controls which transmission PER mode the Node uses for MPDUs not belonging to PQoS Flows
+	
+	mocap set --per_mode <uint32 mode>
+	mode:
+	=====
+	
+	Values:
+	0 = Nominal PER (1e-6) 
+	1 = Very Low PER (1e-8)
+	Default:
+	0 
+	1 (BAND_E)
+	1 (BAND_H)
+	Minimum:
+	0 
+	Maximum:
+	1 
+}
+
+pm_restore_on_link_down
+{
+	Resets power mode when link goes down and back up again
+	
+	mocap set --pm_restore_on_link_down <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Restore power mode to previous setting after link-down, link-up
+	1 = Reset power mode to M0 on link down
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	1 
+}
+
+pmk_exchange_interval
+{
+	PMK interval time. This configuration will take effect only after the next key change.
+	
+	mocap set --pmk_exchange_interval <uint32 msec>
+	msec:
+	=====
+	
+	Values:
+	Units of msec 
+	Default is 11 hours
+	Default:
+	39600000 
+	Minimum:
+	20000 
+}
+
+policing_en
+{
+	Controls whether policing of PQoS Flows is enabled or disabled
+	
+	mocap set --policing_en <uint32 enable>
+	enable:
+	=======
+	
+	Values:
+	0 = disabled 
+	1 = enabled
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	1 
+}
+
+preferred_nc
+{
+	In MoCA 1.1, Preferred NC nodes have a preference over the other nodes in the MoCA Network to become the NC node.
+	(GCAP.37)
+	
+	mocap set --preferred_nc <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = normal node 
+	1 = preferred NC
+	Default:
+	0 
+	1 (BAND_E)
+	1 (BAND_F)
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+privacy_en
+{
+	Enable the MoCA Link Privacy
+	
+	mocap set --privacy_en <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = disable
+	1 = enable
+	Default:
+	0 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+psm_config
+{
+	Configure which PSM components are enabled.
+	
+	mocap set --psm_config <uint32 val>
+	val:
+	====
+	
+	Values:
+	Bitwise value which each bit indicate component <1- enable, 0- disable> 
+	Bit 0 = 3451 
+	Bit 1 = PLL 
+	Bit 2 = Analog 
+	Default:
+	7 
+	6 (7425)
+	3 (28NM)
+	Minimum:
+	0 
+	2 (7425)
+	Maximum:
+	7 
+	3 (28NM)
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+psm_dis
+{
+	Enables disable of the PSM.
+	
+	mocap set --power_save_mechanism_dis <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Normal operation mode 
+	1 = Disable PSM 
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	1 
+}
+
+qam256_capability
+{
+	This fields specifies the QAM256 ability in Admission Res/Req negotiations (NODE_PROTOCOL_SUPPORT field).
+	
+	mocap set --qam256_capability <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Disable 
+	1 = Enable (normal mode)
+	Default:
+	1 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+remote_man
+{
+	Remote management mode
+	
+	mocap set --remote_man <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Disabled 
+	1 = Management over Ethernet enabled 
+	2 = Management over Ethernet and MoCA enabled
+	Default:
+	0 
+	1 (STANDALONE,6802B0)
+	2 (STANDALONE,6802C0)
+	Minimum:
+	0 
+	Maximum:
+	2 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+reset_stats
+{
+	
+	mocap set --reset_stats
+}
+
+restart
+{
+	mocap: invalid command (help)
+	mocap                                    -- Moca stats and settings
+}
+
+restore_defaults
+{
+	
+	mocap set --restore_defaults
+}
+
+rework
+{
+	Mark whether the board is 6802 rework (0-normal, 1-rework)
+	
+	mocap set --rework_6802 <uint32 val>
+	val:
+	====
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	1 (BONDING_SUPPORTED)
+	0 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+rf_band
+{
+	Defines one or multiple bands or sub-bands of operation of the Node among all the supported bands and sub-bands.
+	
+	mocap set --rf_band <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = D-Low, support all MoCA channels in sub-band D-Low 
+	1 = D-High, support all MoCA channels in sub-band D-High 
+	2 = ExD, support all MoCA channels in band D
+	3 = E, support all MoCA channels in band E 
+	4 = F, support all MoCA channels in band F 
+	5 = C4, support single MoCA channel C4 (1000 MHz) 
+	6 = H, support all MoCA channels in band H 
+	7 = Generic, support all MoCA channels in single channel mode only 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+rlapm_cap_100
+{
+	
+	mocap set --rlapm_cap_100 <uint32 val>
+	val:
+	====
+	
+	Values:
+	In units of 1/2 dB. I.e. A value of 6 = 3dB.
+	Default:
+	0 
+}
+
+rlapm_cap_50
+{
+	
+	mocap set --rlapm_cap_50 <uint32 val>
+	val:
+	====
+	
+	Values:
+	In units of 1/2 dB. I.e. A value of 6 = 3dB.
+	Default:
+	0 
+}
+
+rlapm_en
+{
+	Enabling the usage of SNR Margin adjustments according to Rx Power
+	
+	mocap set --rlapm_en <uint32 bool_val>
+	bool_val:
+	=========
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	0 
+	1 (BAND_E)
+	1 (BAND_F)
+}
+
+rlapm_table_100
+{
+	An array of Margin Adjustments per RX power for 100 MHz channel (MoCA 2.0) transmissions. 
+	First value is for 0dBm received power. 
+	Last value is for -65dBm received power. 
+	 
+	The dB values for adjustments are multiplied by 2, in order to allow 1/2 dB resolution.
+	
+	mocap set --rlapm_table_100 <options>
+	options:
+	   rlapmtable   <uint8 value> <index> <end index (optional)>
+}
+
+rlapm_table_50
+{
+	An array of Margin Adjustments per RX power for 50 MHz channel (MoCA 1.1) transmissions. 
+	First value is for 0dBm received power. 
+	Last value is for -65dBm received power. 
+	 
+	The dB values for adjustments are multiplied by 2, in order to allow 1/2 dB resolution.
+	
+	mocap set --rlapm_table_50 <options>
+	options:
+	   rlapmtable   <uint8 value> <index> <end index (optional)>
+}
+
+rtr_config
+{
+	Configure retransmission behavior in the node for non-PQOS flows.
+	
+	mocap set --rtr_config <options>
+	options:
+	   high   <uint8>
+	   low    <uint8>
+	   bg     <uint8>
+	   med    <uint8>
+}
+
+rx_power_tune
+{
+	rx power tuning per frequency
+	
+	mocap set --rx_power_tune <options>
+	options:
+	   padding   <uint16>
+	   offset    <int8 value> <index> <end index (optional)>
+}
+
+rx_tx_packets_per_qm
+{
+	A tuning parameter for the packets per second (PPS) optimizations
+	
+	mocap set --rx_tx_packets_per_qm <uint32 val>
+	val:
+	====
+	Default:
+	18 
+}
+
+rxd_lmo_request
+{
+	A Request for a Receiver-Determined Probe LMO (GCAP.119)
+	
+	mocap set --rxd_lmo_request <options>
+	options:
+	   node_id      <uint32>
+	   channel_id   <uint32>
+	   probe_id     <uint32>
+}
+
+sapm_en
+{
+	Enabling the usage SNR Margin adjustments per sub carrier
+	
+	mocap set --sapm_en <uint32 bool_val>
+	bool_val:
+	=========
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	0 
+}
+
+sapm_table_100
+{
+	Sub-carrier Added PHY Margin table for 100 MHz (MoCA 2.0) transmission profiles.These arrays allows differentiation in SNR margin values per sub carrier. 
+	
+	The values will be passed multiplied by 2, for allowing 0.5dB values.
+	
+	mocap set --sapm_table_100 <options>
+	options:
+	   val   <uint8 value> <index> <end index (optional)>
+}
+
+sapm_table_50
+{
+	Sub-carrier Added PHY Margin table for 50 MHz (MoCA 1.1) transmission profiles.These arrays allows differentiation in SNR margin values per sub carrier. 
+	
+	The values will be passed multiplied by 2, for allowing 0.5dB values.
+	
+	mocap set --sapm_table_50 <options>
+	options:
+	   val   <uint8 value> <index> <end index (optional)>
+}
+
+sapm_table_sec
+{
+	Sub-carrier Added PHY Margin table for 100 MHz (MoCA 2.0) secondary channel transmission profiles.These arrays allows differentiation in SNR margin values per sub carrier. 
+	
+	The values will be passed multiplied by 2, for allowing 0.5dB values.
+	
+	mocap set --sapm_table_sec <options>
+	options:
+	   val   <uint8 value> <index> <end index (optional)>
+}
+
+schop
+{
+	This is the Single Channel Operation indication.
+	Enable the MoCA for automatic Network Search, using the LOF and RF_TYPE parameters, or use the OSP Single Channel Operation.
+	
+	mocap set --single_channel_operation <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Normal Network Search operation
+	1 = Single Channel Operation.
+	Default:
+	0 
+	1 (BAND_GENERIC)
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+sco
+{
+	For a MoCA 2.0 network, this parameter specifies the frequency offset of the secondary channel relative to the beacon channel in bonded mode.This parameter is relevant when the node is NC.
+	
+	mocap set --secondary_ch_offset <int32 val>
+	val:
+	====
+	
+	Values:
+	Frequency offset in MHz. Valid values are -125, 0, +125. A setting of 1 instructs firmware to use the default value based on LOF.
+	Default:
+	1 
+	125 (BAND_GENERIC)
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+selective_rr
+{
+	
+	mocap set --selective_rr <uint32 val>
+	val:
+	====
+	Default:
+	3 
+}
+
+sigma2_prints
+{
+	Enabling or disabling the Sigma II prints of Probe I results. 
+	To enable these prints moca_core_trace_enable must also be set to 1.
+	
+	mocap set --sigma2_prints <uint32 bool_val>
+	bool_val:
+	=========
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	0 
+}
+
+snr_margin_ldpc
+{
+	This parameter is used to configure the LDPC SNR margin on the MoCA interface.The snr_margin feature is intended for use only by advanced lab users. Values range from -3 to +25dB in steps of 1/256 dB. The resulting table entries must have similar or increasing values as the constellation increases.
+	
+	mocap set --snr_margin_ldpc <options>
+	options:
+	   offsets       <int16 value> <index> <end index (optional)>
+	   base_margin   <int32>
+}
+
+snr_margin_ldpc_pre5
+{
+	This parameter is used to configure the LDPC Preamble 5 SNR margin on the MoCA interface.The snr_margin feature is intended for use only by advanced lab users. Values range from -3 to +25dB in steps of 1/256 dB. The resulting table entries must have similar or increasing values as the constellation increases.
+	
+	mocap set --snr_margin_ldpc_pre5 <options>
+	options:
+	   offsets       <int16 value> <index> <end index (optional)>
+	   base_margin   <int32>
+}
+
+snr_margin_ldpc_pri_ch
+{
+	This parameter is used to configure the LDPC SNR margin on the primary channel of the MoCA interface when bonded operation is in effect.The snr_margin feature is intended for use only by advanced lab users. Values range from -3 to +25dB in steps of 1/256 dB. The resulting table entries must have similar or increasing values as the constellation increases.
+	
+	mocap set --snr_margin_ldpc_pri_ch <options>
+	options:
+	   offsets       <int16 value> <index> <end index (optional)>
+	   base_margin   <int32>
+}
+
+snr_margin_ldpc_sec_ch
+{
+	This parameter is used to configure the LDPC SNR margin on the secondary channel of the MoCA interface when bonded operation is in effect.The snr_margin feature is intended for use only by advanced lab users. Values range from -3 to +25dB in steps of 1/256 dB. The resulting table entries must have similar or increasing values as the constellation increases.
+	
+	mocap set --snr_margin_ldpc_sec_ch <options>
+	options:
+	   offsets       <int16 value> <index> <end index (optional)>
+	   base_margin   <int32>
+}
+
+snr_margin_ofdma
+{
+	This parameter is used to configure the OFDMA SNR margin on the MoCA interface.The snr_margin feature is intended for use only by advanced lab users. Values range from -3 to +25dB in steps of 1/256 dB. The resulting table entries must have similar or increasing values as the constellation increases.
+	
+	mocap set --snr_margin_ofdma <options>
+	options:
+	   offsets       <int16 value> <index> <end index (optional)>
+	   base_margin   <int32>
+}
+
+snr_margin_pre5_pri_ch
+{
+	This parameter is used to configure the LDPC SNR margin on the primary channel of the MoCA interface when bonded operation is in effect.The snr_margin feature is intended for use only by advanced lab users. Values range from -3 to +25dB in steps of 1/256 dB. The resulting table entries must have similar or increasing values as the constellation increases.
+	
+	mocap set --snr_margin_pre5_pri_ch <options>
+	options:
+	   offsets       <int16 value> <index> <end index (optional)>
+	   base_margin   <int32>
+}
+
+snr_margin_pre5_sec_ch
+{
+	This parameter is used to configure the LDPC SNR margin on the primary channel of the MoCA interface when bonded operation is in effect.The snr_margin feature is intended for use only by advanced lab users. Values range from -3 to +25dB in steps of 1/256 dB. The resulting table entries must have similar or increasing values as the constellation increases.
+	
+	mocap set --snr_margin_pre5_sec_ch <options>
+	options:
+	   offsets       <int16 value> <index> <end index (optional)>
+	   base_margin   <int32>
+}
+
+snr_margin_rs
+{
+	This parameter is used to configure the RS SNR margin on the MoCA interface.The snr_margin feature is intended for use only by advanced lab users. Values range from -3 to +25dB in steps of 1/256 dB. The resulting table entries must have similar or increasing values as the constellation increases.
+	
+	mocap set --snr_margin_rs <options>
+	options:
+	   offsets       <int16 value> <index> <end index (optional)>
+	   base_margin   <int32>
+}
+
+snr_prints
+{
+	Enabling or disabling the SNR prints. 
+	To enable these prints moca_core_trace_enable must also be set to 1.
+	
+	mocap set --snr_prints <uint32 bool_val>
+	bool_val:
+	=========
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	0 
+}
+
+stag_priority
+{
+	Mapping between stag priority and MoCA priority
+	
+	mocap set --stag_priority <options>
+	options:
+	   moca_priority_2   <uint32>
+	   tag_priority_2    <uint32>
+	   moca_priority_5   <uint32>
+	   tag_mask          <uint32>
+	   tag_priority_5    <uint32>
+	   moca_priority_7   <uint32>
+	   tag_priority_0    <uint32>
+	   moca_priority_0   <uint32>
+	   tag_priority_6    <uint32>
+	   moca_priority_4   <uint32>
+	   tag_priority_7    <uint32>
+	   tag_priority_3    <uint32>
+	   enable            <uint32>
+	   tag_priority_1    <uint32>
+	   moca_priority_3   <uint32>
+	   tag_priority_4    <uint32>
+	   moca_priority_1   <uint32>
+	   moca_priority_6   <uint32>
+}
+
+stag_removal
+{
+	Tag reference table, used for tag removal
+	
+	mocap set --stag_removal <options>
+	options:
+	   valid_3   <uint32>
+	   valid_1   <uint32>
+	   valid_0   <uint32>
+	   mask_3    <uint32>
+	   value_2   <uint32>
+	   valid_2   <uint32>
+	   value_3   <uint32>
+	   value_1   <uint32>
+	   enable    <uint32>
+	   value_0   <uint32>
+	   mask_1    <uint32>
+	   mask_0    <uint32>
+	   mask_2    <uint32>
+}
+
+standby_power_state
+{
+	For GET operations, reports current standby power state. 
+	For SET operations, set the power state of the core during system standby
+	
+	Refer to power_state_capabilities to learn the supported power states.
+	
+	mocap set --standby_power_state <uint32 state>
+	state:
+	======
+	A list from the range M0-M3
+	
+	Values:
+	0 = M0, Active
+	1 = M1, Idle 
+	2 = M2, Standby 
+	3 = M3, Sleep
+	Default:
+	2 
+	Minimum:
+	0 
+	Maximum:
+	3 
+}
+
+star_topology_en
+{
+	Enable support for star topology, which allows new nodes to admit to a network as long as the link to the NC is usable. The channel between ENs does not need to be usable in this mode.
+	
+	mocap set --star_topology_en <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	1 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+start
+{
+	mocap: invalid command (help)
+	mocap                                    -- Moca stats and settings
+}
+
+start_ulmo
+{
+	A Request for an unsolicited LMO to any node.
+	
+	mocap set --start_ulmo <options>
+	options:
+	   ofdma_node_mask   <uint32>
+	   node_id           <uint32>
+	   subcarrier        <bits (format "w,x,y-z")>
+	   report_type       <uint32>
+}
+
+stop
+{
+	Instruct the MoCA daemon to stop the MoCA core.
+	
+	mocap set --stop
+}
+
+taboo
+{
+	Set and Get taboo channel configuration. The fixed mask parameters are used to set specific frequencies as taboo regardless of the operating frequency. The left and right mask values are used to set frequencies relative to the operatingfrequency as taboo.
+	
+	mocap set --taboo_channels <options>
+	options:
+	   taboo_left_mask            <uint32>
+	   taboo_fixed_mask_start     <uint32>
+	   taboo_fixed_channel_mask   <uint32>
+	   taboo_right_mask           <uint32>
+}
+
+target_phy_rate_20
+{
+	Phy rate in MoCA 2.0 mode
+	
+	mocap set --target_phy_rate_20 <uint32 mbps>
+	mbps:
+	=====
+	
+	Values:
+	Units of Mbps
+	Default:
+	630 
+}
+
+target_phy_rate_20_sec_ch
+{
+	Secondary phy rate in MoCA 2.0 mode
+	
+	mocap set --target_phy_rate_20_sec_ch <uint32 mbps>
+	mbps:
+	=====
+	
+	Values:
+	Units of Mbps
+	Default:
+	630 
+}
+
+target_phy_rate_20_turbo
+{
+	Phy rate in MoCA 2.0 turbo mode
+	
+	mocap set --target_phy_rate_20_turbo <uint32 mbps>
+	mbps:
+	=====
+	
+	Values:
+	Units of Mbps
+	Default:
+	670 
+}
+
+target_phy_rate_20_turbo_sec_ch
+{
+	Secondary phy rate in MoCA 2.0 turbo mode
+	
+	mocap set --target_phy_rate_20_turbo_sec_ch <uint32 mbps>
+	mbps:
+	=====
+	
+	Values:
+	Units of Mbps
+	Default:
+	670 
+}
+
+target_phy_rate_20_turbo_vlper
+{
+	Phy rate in MoCA 2.0 turbo mode for VLPER PHY profiles
+	
+	mocap set --target_phy_rate_20_turbo_vlper <uint32 mbps>
+	mbps:
+	=====
+	
+	Values:
+	Units of Mbps
+	Default:
+	650 
+}
+
+target_phy_rate_20_turbo_vlper_sec_ch
+{
+	Secondary phy rate in MoCA 2.0 turbo mode for VLPER PHY profiles
+	
+	mocap set --target_phy_rate_20_turbo_vlper_sec_ch <uint32 mbps>
+	mbps:
+	=====
+	
+	Values:
+	Units of Mbps
+	Default:
+	650 
+}
+
+target_phy_rate_qam128
+{
+	Target PHY rate in Mbps, according to MoCA spec.Target PHY rate may be changed only before Admission time. Otherwise, the expected results are not guaranteed.
+	
+	mocap set --target_phy_rate_qam128 <uint32 mbps>
+	mbps:
+	=====
+	
+	Values:
+	0 = Disable the Target PHY rate algorithm
+	Default:
+	245 
+	Maximum:
+	500 
+}
+
+target_phy_rate_qam256
+{
+	Target PHY rate in Mbps, according to MoCA spec.Target PHY rate may be changed only before Admission time. Otherwise, the expected results are not guaranteed.
+	
+	mocap set --target_phy_rate_qam256 <uint32 mbps>
+	mbps:
+	=====
+	
+	Values:
+	0 = Disable the Target PHY rate algorithm
+	Default:
+	275 
+	Maximum:
+	500 
+}
+
+tek_exchange_interval
+{
+	TEK intervals time. This configuration will take effect only after the next key change.
+	
+	mocap set --tek_exchange_interval <uint32 msec>
+	msec:
+	=====
+	
+	Values:
+	Units of msec 
+	Default is 9 minutes
+	Default:
+	540000 
+	Minimum:
+	20000 
+}
+
+tlp_mode
+{
+	TLP mode (GCAP.107)
+	
+	mocap set --tlp_mode <uint32 mode>
+	mode:
+	=====
+	
+	Values:
+	1 = TLP_MIN1 and TLP_MAX1 
+	 2 = TLP_MIN2 and TLP_MAX2
+	Default:
+	1 
+	Minimum:
+	1 
+	Maximum:
+	2 
+}
+
+tpc_en
+{
+	Enable Transmit Power Control (TPC).
+	When enabled, the transmit power level is adjusted to a setting that will achieve the maximum target PHY bit rate. The adjusted power setting will be less than or equal to 'Tx Power'.
+	When disabled, the transmit power level is set to <Tx Power>.
+	
+	mocap set --tpc_en <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = disable
+	1 = enable
+	Default:
+	1 
+	0 (BAND_E)
+	0 (BAND_F)
+	0 (BAND_H)
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+trace
+{
+	Enabling or disabling the MoCA core trace to the host via MMP traps. 
+	When measuring performance, the trace should be turned off.
+	
+	mocap set --moca_core_trace_enable <uint32 bool_val>
+	bool_val:
+	=========
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	0 
+}
+
+turbo_en
+{
+	Enables/Disables Turbo
+	
+	mocap set --turbo_en <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = Disable 
+	1 = Enable
+	Default:
+	0 
+	Note: Parameter will take effect after next MoCA core initialization.
+}
+
+use_ext_data_mem
+{
+	Configures whether to use extended memory in bonded chip running as single
+	
+	mocap set --use_ext_data_mem <uint32 val>
+	val:
+	====
+	Default:
+	0 
+	1 (STANDALONE,6803C0)
+	1 (BONDING_SUPPORTED)
+	Minimum:
+	0 
+	Maximum:
+	0 
+	1 (BONDING_SUPPORTED)
+	Warning: Command failed for Option '--use_ext_data_mem'.
+	Note: Parameter will take effect after next MoCA core initialization.
+	mocap                                    -- Moca stats and settings
+}
+
+verbose
+{
+	This parameter controls which prints are displayed by the moca daemon.This is a bit field where each bit enables or disables the printingsof a specific log level. 
+	By default, Error, Warning and Informational messages are printed.
+	
+	mocap set --verbose <uint32 level>
+	level:
+	======
+	
+	Values:
+	Bit 0 = Debug messages 
+	Bit 1 = Verbose messages 
+	Bit 2 = Informational messages 
+	Bit 3 = Warning messages 
+	Bit 4 = Error messages 
+	Bit 5 = Trap messages 
+	Bit 6 = MMP messages 
+	Bit 7 = RTT printouts to console 
+	Bit 8 = MoCA Core Warning messages 
+	Bit 9 = Power State event messages 
+	Bit 10= RTT Dump to file 
+	Bit 11= Direct all mocad output to IE_MOCAD_PRINTF trap
+}
+
+wdog_enable
+{
+	
+	mocap set --wdog_enable <uint32 enable>
+	enable:
+	=======
+	Default:
+	1 
+}
+
+wom_ip
+{
+	Defines a WoL packet filter. MoCA will trigger a wakeup interruptif it receives an ARP packet matching the ipaddress, and wom_mode is enabled.Up to 5 IP addresses can be configured.
+	
+	mocap set --wom_ip <options>
+	options:
+	   ipaddr   <uint32>
+	   index    <uint32>
+}
+
+wom_magic_enable
+{
+	Enables magic-packet filtering for WoM
+	
+	mocap set --wom_magic_enable <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = magic-packet filtering disabled
+	1 = magic-packet filtering enabled
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	1 
+}
+
+wom_magic_mac
+{
+	Defines the MAC address to be used in magic-packet filtering.This feature needs to be enabled via wom_magic_enable.MoCA will trigger a wakeup interrupt if it receives a magic-packetwith this MAC address
+	
+	mocap set --wom_magic_mac <options>
+	options:
+	   val   <macaddr, format xx:xx:xx:xx:xx:xx>
+}
+
+wom_mode
+{
+	Enables WoM mode via packet filtering in the MoCA core in system suspend. Seewom_ip and wom_pattern to configure the packet filtering
+	
+	mocap set --wom_mode <uint32 val>
+	val:
+	====
+	
+	Values:
+	0 = wom_mode disabled
+	1 = wom_mode enabled
+	Default:
+	0 
+	2 (SWITCH)
+	Minimum:
+	0 
+	Maximum:
+	2 
+}
+
+wom_pattern do
+{
+	Defines a WoL packet filter. MoCA will trigger a wakeup interruptif it receives a packet matching the filter, and wom_mode is enabled.Up to 5 filters can be configured. Set Mask to all 0xFF to invalidatean entry
+	
+	mocap set --wom_pattern <options>
+	options:
+	   bytes   <uint8 value> <index> <end index (optional)>
+	   mask    <uint8 value> <index> <end index (optional)>
+	   index   <uint32>
+}

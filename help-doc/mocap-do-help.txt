@@ -1,0 +1,226 @@
+aca
+{
+	Perform an Alternate Channel Assessment operation.
+	
+	mocap do --aca <options>
+	options:
+	   src_node        <uint32>
+	   dest_nodemask   <uint32>
+	   type            <uint32>
+	   channel         <uint32>
+	   num_probes      <uint32>
+}
+
+dd
+{
+	A trigger for initiating a Device Discovery operation.The request can be for a specific node or for group of nodes by setting the appropriate bits in the node_mask field. 
+	This operation is for MoCA 2.0 nodes only.
+	The output arrays are indexed by node ID. Nodes that are not included in the DD transaction or that don't respond to the DD transaction will have values of zero.
+	
+	mocap do --dd_init <uint32 node_mask>
+	node_mask:
+	==========
+	To include node with ID 'x' in the request, set bit (1 << 'x'). 
+	
+	For example, set node_mask to 0x8D to includenode IDs 0, 2, 3 and 7.
+	Default:
+	0xFFFF 
+}
+
+fmr_20
+{
+	A trigger for initiating a MoCA 2.0 full mesh rate operation.The request can be for a specific node or for group of nodes by setting the appropriate bits in the node_mask field.
+	
+	mocap do --fmr_20 <uint32 node_mask>
+	node_mask:
+	==========
+	To include node with ID 'x' in the request, set bit (1 << 'x'). 
+	
+	For example, set node_mask to 0x8D to includenode IDs 0, 2, 3 and 7. 
+	Setting the value to zero will perform FMR for all active nodes.
+	Default:
+	0 
+}
+
+fmr_init
+{
+	A trigger for initiating a full mesh rate operation.The request can be for a specific node or for group of nodes by setting the appropriate bits in the node_mask field.
+	
+	mocap do --fmr_init <uint32 node_mask>
+	node_mask:
+	==========
+	To include node with ID 'x' in the request, set bit (1 << 'x'). 
+	
+	For example, set node_mask to 0x8D to includenode IDs 0, 2, 3 and 7. 
+	Setting the value to zero will perform FMR for all active nodes.
+	Default:
+	0 
+}
+
+hostless_mode
+{
+	Put firmware into host-less mode of operation. Firmware will not send any traps to mocad, and mocad will disable the watchdog.
+	
+	mocap do --hostless_mode <uint32 enable>
+	enable:
+	=======
+	Enable or disable hostless-mode.
+	0 - Disable (normal operation)
+	1 - Enable
+	2 - Enable, but allow traffic to be forwarded to the host
+	Default:
+	0 
+}
+
+mocad_printf
+{
+	One trap is sent for every core trace
+	
+	mocap do --mocad_printf
+}
+
+mr
+{
+	Order a MoCA Reset operation on the MoCA network.Specify the nodes to be reset using the node_mask field.
+	
+	mocap do --moca_reset <options>
+	options:
+	   node_mask         <uint32>
+	   reset_timer       <uint32>
+	   non_def_seq_num   <uint32>
+}
+
+pqosc
+{
+	Creating a new PQoS flow. The flowid field must be unique to the network. The Ingress side is configured by entering the ingress node MAC address. The Egress side is configured by entering the egress node MAC address.
+	
+	mocap do --pqos_create_flow <options>
+	options:
+	   ingress_node           <macaddr>
+	   egress_node            <macaddr>
+	   flow_id                <macaddr>
+	   packet_da              <macaddr>
+	   packet_size            <uint32>
+	   flow_tag               <uint32>
+	   peak_data_rate         <uint32>
+	   lease_time             <uint32>
+	   burst_size             <uint32>
+	   vlan_id                <uint32>
+	   max_latency            <uint32>
+	   short_term_avg_ratio   <uint32>
+	   max_retry              <uint32>
+	   flow_per               <uint32>
+	   in_order_delivery      <uint32>
+	   traffic_protocol       <uint32>
+	   ingr_class_rule        <uint32>
+	   vlan_tag               <uint32>
+	   dscp_moca              <uint32>
+}
+
+pqosd
+{
+	Deleting an existing PQoS flow
+	
+	mocap do --pqos_delete_flow <macaddr flow_id>
+	flow_id:
+	========
+	Default:
+	01:00:5e:00:00:00 
+}
+
+pqosl
+{
+	Retrieving the list of flow IDs for a specific ingress node. The node can be selected by its MAC Addr or its node ID.
+	A maximum of 32 PQOS flows will be returned.
+	
+	mocap do --pqos_list <options>
+	options:
+	   ingr_node_id       <uint32>
+	   ingr_node_mac      <macaddr>
+	   flow_max_return    <uint16>
+	   flow_start_index   <uint32>
+}
+
+pqosq
+{
+	Retrieving a specific PQoS flow parameters
+	
+	mocap do --pqos_query <macaddr flow_id>
+	flow_id:
+	========
+	Flow identifier in the form of a multicast MAC address
+	Default:
+	01:00:5e:00:01:00 
+}
+
+pqoss
+{
+	Perform a PQOS Status operation to obtain the available PQOS resources on this node.
+	
+	mocap do --pqos_status <uint32 unused>
+	unused:
+	=======
+	Dummy variable.
+	Default:
+	0 
+}
+
+pqosu
+{
+	Update the parameters of an existing PQoS flow
+	
+	mocap do --pqos_update_flow <options>
+	options:
+	   flow_id                <macaddr>
+	   ingress_mac            <macaddr>
+	   egress_mac             <macaddr>
+	   reserved               <uint16>
+	   packet_size            <uint32>
+	   flow_tag               <uint32>
+	   peak_data_rate         <uint32>
+	   lease_time             <uint32>
+	   burst_size             <uint32>
+	   max_latency            <uint32>
+	   short_term_avg_ratio   <uint32>
+	   max_retry              <uint32>
+	   flow_per               <uint32>
+	   in_order_delivery      <uint32>
+	   traffic_protocol       <uint32>
+}
+
+ps_cmd
+{
+	Execute a power state change command and report the results of the command.
+	
+	mocap do --ps_cmd <uint32 new_state>
+	new_state:
+	==========
+	A list from the range M0-M3
+	
+	Values:
+	0 = M0, Active
+	1 = M1, Idle 
+	2 = M2, Standby 
+	3 = M3, Sleep
+	Minimum:
+	0 
+	Maximum:
+	3 
+}
+
+wakeup_node
+{
+	Wake up a remote node (request that it change to M0)
+	
+	mocap do --wakeup_node <uint32 node>
+	node:
+	=====
+	Node ID to wake-up
+	Default:
+	0 
+	Minimum:
+	0 
+	Maximum:
+	15 
+}
+

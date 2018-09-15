@@ -1,0 +1,36 @@
+Start Address			Size				File
+0x032000				0xF0162				flashapp.bin
+0x122164				0x31F98				ramimage.bin
+0x1540FC				0xB200C				moca20core-gen22.bin
+0x23A13C				0x29A				stylemain.css
+0x23A3D8				0x78C				sw_update.html
+0x23AB64				0xEC				runonce.sh
+0x23AC50				0x4C7				startup.sh
+
+// dir listing address is wrong, but size is correct
+
+0x00004000     983394 flashapp.bin
+0x000F4164     204696 ramimage.bin
+0x001260FC     729100 moca20core-gen22.bin
+0x001D8108      12445 html/aei_log.jpg
+0x001DB1A8     200611 html/bg_body_home.png
+0x0020C14C        928 html/colors.css
+0x0020C4EC       7672 html/conf.html
+0x0020E2E4        864 html/footer.html
+0x0020E644        982 html/index.html
+0x0020EA1C       4361 html/info.html
+0x0020FB28       2143 html/logo_62x128.png
+0x00210388      15112 html/logobkg.gif
+0x00213E90      10261 html/logo_corp.gif
+0x002166A8        568 html/logo.html
+0x002168E0       6108 html/logomenu.gif
+0x002180BC      41711 html/menuBcm.js
+0x002223AC       1554 html/menu.html
+0x002229C0      13230 html/menuTitle.js
+0x00225D70       9647 html/menuTree.js
+0x00228320       6437 html/nodes.html
+0x00229C48       1266 html/stats.html
+0x0022A13C        666 html/stylemain.css
+0x0022A3D8       1932 html/sw_update.html
+0x0022AB64        236 runonce.sh
+0x0022AC50       1223 startup.sh
