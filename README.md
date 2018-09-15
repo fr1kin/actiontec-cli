@@ -42,3 +42,15 @@ Internal commands are abbreviated with ``:`` and will not send anything to the M
 ``:test`` Tests the connectivity to the MoCA adapter.
 
 ``:exit`` or ``exit`` Exists the process.
+
+**Using grep**
+
+For non-internal commands, one can use a grep-like feature by adding so to the end of the command.
+
+``command | grep <regex>``
+
+Example:
+
+``help | grep mocap`` 
+will only print 
+``mocap                                    -- Moca stats and settings``
