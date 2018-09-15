@@ -73,8 +73,13 @@ public class Utils {
         StringBuilder builder = new StringBuilder();
 
         cmdHelpPair.forEach((cmd, help) -> {
-            builder.append(String.format("%-" + len + "s= %s", cmd, help));
-            builder.append('\n');
+            builder.append(cmd);
+            builder.append("\n{\n\t");
+            String str = help.replaceAll("\n", "\n\t");
+            if(str.endsWith("\t"))
+                str = str.substring(0, str.length() - 1);
+            builder.append(str);
+            builder.append("}\n\n");
         });
 
         try {

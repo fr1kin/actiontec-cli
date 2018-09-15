@@ -67,5 +67,3 @@ tftp <server> [<filename> [<offset>]]														-- Tftp file into flash
 time									 													-- Display current time
 tpcap ...																					-- Test-port Capture
 version								  														-- Display flash image version
-
-(.*?)[\s{2,}|\t]+--\s?(.*)

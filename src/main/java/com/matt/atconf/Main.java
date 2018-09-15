@@ -1,6 +1,9 @@
 package com.matt.atconf;
 
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
@@ -25,9 +28,12 @@ public class Main {
         } else
             Utils.setActiontecHost(ACTIONTEC_DEFAULT_ADDR);
 
-        System.out.println("Actiontec MoCA Adapter CLI over HTTP");
-        System.out.println("Use :help to see internal commands");
-        System.out.println("Use help to see Actiontec commands");
+        System.err.println("WARNING: It is possible to brick your MoCA adapter. Use with caution");
+        System.out.println("Actiontec MoCA Adapter CLI");
+        System.out.println("Enter :help to see internal commands");
+        System.out.println("Enter help to see the Actiontec device commands");
+        System.out.println("Enter 'exit' or ':exit' to exit the process");
+        System.out.println("If the device stops responding, try holding the reset button down for 20 seconds to factory reset the device");
         System.out.println("Actiontec address: " + Utils.getActiontecHost());
 
         Scanner scanner = new Scanner(System.in);
@@ -38,7 +44,9 @@ public class Main {
             for(String next : entry.split(";")) {
                 next = next.trim();
                 if(!next.isEmpty()) {
-                    if(next.startsWith(":"))
+                    if(next.equalsIgnoreCase("exit"))
+                        System.exit(0);
+                    else if(next.startsWith(":"))
                         processInternalCmd(next.substring(1));
                     else
                         processCmd(next);
@@ -48,16 +56,22 @@ public class Main {
     }
 
     private static void processInternalCmd(String command) {
-        if(command.toLowerCase().startsWith("exit")) {
+        if(command.toLowerCase().startsWith("exit"))
             System.exit(0);
-        } else if(command.toLowerCase().startsWith("dump")) {
+        else if(command.toLowerCase().startsWith("dump")) {
             String[] ss = command.trim().split(" ");
             try {
                 String file = ss[1];
                 String gs = ss[2].toLowerCase();
 
-                if (!gs.matches("get|ge|g") && !gs.matches("set|se|s") && !gs.matches("do|d")) {
-                    System.err.println("second argument must be get or set");
+                if(gs.startsWith("g"))
+                    gs = "get";
+                else if(gs.startsWith("s"))
+                    gs = "set";
+                else if(gs.startsWith("d"))
+                    gs = "do";
+                else {
+                    System.err.println("second argument must be get, set, or do");
                     return;
                 }
 
@@ -70,12 +84,25 @@ public class Main {
 
                 System.out.println("successfully dumped help text to '" + dump.getFileName().toString() + "'");
             } catch (ArrayIndexOutOfBoundsException e) {
-                System.err.println("format: dump <file> <get | set>");
+                System.err.println("format: dump <file> <get|set|do>");
             } catch (Throwable t) {
                 System.err.println(t.getClass().getSimpleName() + ": " + t.getMessage());
             }
-        } else if(command.toLowerCase().startsWith("help")) {
+        }
+        else if(command.toLowerCase().startsWith("test")) {
+            try {
+                InetAddress address = Inet4Address.getByName(Utils.getActiontecHost().substring("http:/".length() + 1, Utils.getActiontecHost().length() - 1));
+                if(!address.isReachable(5000))
+                    throw new Exception("address not reachable");
+                else
+                    System.out.println("connection successful");
+            } catch (Throwable t) {
+                System.err.println("test failed: " + t.getMessage());
+            }
+        }
+        else if(command.toLowerCase().startsWith("help")) {
             System.out.println(String.format("%-16s --%s", ":dump <file> <get|set|do>", "Dump help option text to a file"));
+            System.out.println(String.format("%-16s --%s", ":test", "Test connectivity to the device"));
             System.out.println(String.format("%-16s --%s", ":exit", "Exit this process"));
             System.out.println(String.format("%-16s --%s", ":help", "View internal command descriptions"));
         }
