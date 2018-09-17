@@ -36,7 +36,7 @@ Dumps of important commands help text can be viewed in the ``/help-doc`` directo
 
 Internal commands are abbreviated with ``:`` and will not send anything to the MoCA device.
 
-``:dump <file> <get | set | do>`` Dumps the help text for a mocap subcommand for every subcommand provided in the
+``:gen-mocap-help-file <file> <get | set | do>`` Dumps the help text for a mocap subcommand for every subcommand provided in the
 ``file`` (separated by newline). ``get``, ``set``, and ``do`` are the shell commands to be appended.
 
 ``:test`` Tests the connectivity to the MoCA adapter.

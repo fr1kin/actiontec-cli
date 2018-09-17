@@ -58,7 +58,7 @@ public class Main {
     private static void processInternalCmd(String command) {
         if(command.toLowerCase().startsWith("exit"))
             System.exit(0);
-        else if(command.toLowerCase().startsWith("dump")) {
+        else if(command.toLowerCase().startsWith("gen-mocap-help-file")) {
             String[] ss = command.trim().split(" ");
             try {
                 String file = ss[1];
@@ -78,13 +78,13 @@ public class Main {
                 Path src = ROOT_PATH.resolve(file);
                 Path dump = ROOT_PATH.resolve("dump-" + src.getFileName().toString());
 
-                System.out.println("dump beginning, may take a while");
+                System.out.println("task beginning, may take a while");
 
                 Utils.buildOptionHelpFile(src, dump, gs);
 
-                System.out.println("successfully dumped help text to '" + dump.getFileName().toString() + "'");
+                System.out.println("generation completed, saved to '" + dump.getFileName().toString() + "'");
             } catch (ArrayIndexOutOfBoundsException e) {
-                System.err.println("format: dump <file> <get|set|do>");
+                System.err.println("format: gen-mocap-help-file <file> <get|set|do>");
             } catch (Throwable t) {
                 System.err.println(t.getClass().getSimpleName() + ": " + t.getMessage());
             }
@@ -101,7 +101,7 @@ public class Main {
             }
         }
         else if(command.toLowerCase().startsWith("help")) {
-            System.out.println(String.format("%-16s --%s", ":dump <file> <get|set|do>", "Dump help option text to a file"));
+            System.out.println(String.format("%-16s --%s", ":gen-mocap-help-file <file> <get|set|do>", "Dump help option text to a file"));
             System.out.println(String.format("%-16s --%s", ":test", "Test connectivity to the device"));
             System.out.println(String.format("%-16s --%s", ":exit", "Exit this process"));
             System.out.println(String.format("%-16s --%s", ":help", "View internal command descriptions"));
