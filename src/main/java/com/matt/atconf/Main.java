@@ -47,7 +47,7 @@ public class Main {
                     if(next.equalsIgnoreCase("exit"))
                         System.exit(0);
                     else if(next.startsWith(":"))
-                        processInternalCmd(next.substring(1));
+                        processInternalCmd(next.substring(1).trim());
                     else
                         processCmd(next);
                 }
@@ -85,6 +85,33 @@ public class Main {
                 System.out.println("generation completed, saved to '" + dump.getFileName().toString() + "'");
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.err.println("format: gen-mocap-help-file <file> <get|set|do>");
+            } catch (Throwable t) {
+                System.err.println(t.getClass().getSimpleName() + ": " + t.getMessage());
+            }
+        }
+        else if(command.toLowerCase().startsWith("dump")) {
+            String[] ss = command.trim().split(" ");
+            try {
+                long start = Utils.parseAddress(ss[1]);
+                long to = Utils.parseAddress(ss[2]);
+                String type = ss[3];
+                String output = ss[4];
+
+                switch (type.charAt(0)) {
+                    case 'd':
+                        type = "dump";
+                        break;
+                    case 'f':
+                        type = "flash-dump";
+                        break;
+                    default:
+                        System.err.println("type argument must be 'dump' or 'flash-dump'");
+                        return;
+                }
+
+                Utils.dumpMemoryRangeToFile(start, to, type, ROOT_PATH.resolve(output));
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.err.println("format: dump <start-addr> <end-addr> <3450|dump|flash>");
             } catch (Throwable t) {
                 System.err.println(t.getClass().getSimpleName() + ": " + t.getMessage());
             }

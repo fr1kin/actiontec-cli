@@ -25,6 +25,10 @@ public class Utils {
         return actiontecHost;
     }
 
+    public static long parseAddress(String addr) {
+        return Long.valueOf(addr.startsWith("0x") ? addr.substring(2) : addr, addr.startsWith("0x") ? 16 : 10);
+    }
+
     public static String formatCommand(String command) {
         return command.replaceAll("\\s", "&"); // replace all spaces with &
     }
@@ -116,5 +120,42 @@ public class Utils {
         } else {
             System.out.print('\n');
         }
+    }
+
+    public static void dumpMemoryRangeToFile(long startAddr, long endAddr, String type, Path dump) {
+        final long MEM_STEP = 0x80;
+
+        startAddr = Math.max(0L, Math.min(startAddr, 4294967295L));
+        endAddr = Math.max(0L, Math.min(endAddr, 4294967295L));
+
+        if(startAddr >= endAddr)
+            return;
+
+        int reqs = (int)(((endAddr - startAddr) / MEM_STEP) + 1L);
+
+        System.out.printf("running %s from 0x%X - 0x%X (%d requests)\n", type, startAddr, endAddr, reqs);
+
+        for(int i = 0, r = 0; i < reqs; ++i) {
+            long addr = startAddr + (i * MEM_STEP);
+            try {
+                String response = httpGetRequest(formatCommand(type + " " + addr));
+                r = 0; // reset retry counter on success
+                System.out.print("!");
+                try {
+                    Files.write(dump, response.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                } catch (Throwable t) {} // ignore
+            } catch (Throwable t) {
+                if(r < 5) {
+                    System.out.print("T");
+                    ++r;
+                    --i;
+                } else {
+                    System.err.println("\nfailed after 5 retries");
+                    return;
+                }
+            }
+        }
+        System.out.println();
+        System.out.println("success");
     }
 }
