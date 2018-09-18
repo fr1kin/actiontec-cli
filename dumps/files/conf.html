@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)http://192.168.144.30/conf.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+<link rel="stylesheet" href="./conf_files/stylemain.css" type="text/css">
+<link rel="stylesheet" href="./conf_files/colors.css" type="text/css">
+
+</head>
+<body>
+
+
+<blockquote>
+ 
+<br>
+<b>Configuration</b><br>
+
+<form id="form" name="form">
+
+<label for="rf_passwd">MoCA Password: </label>
+    <input type="text" id="rf_passwd" length="17">
+    <label for="rf_passwd_warn"> (12-17 numeric characters)</label>
+<br>
+
+<label for="rf_privacy">MoCA Privacy: </label>
+    <select id="rf_privacy" name="rf_privacy">
+	<option value="0">Disable</option>
+	<option value="1">Enable</option>
+    </select>
+<br>
+
+<label for="rf_channel">RF Channel: </label>
+    <input type="text" id="rf_channel" length="4">
+<br>
+
+<label for="band">RF Band: </label>
+    <select id="band" name="band">
+	<option value="0">Band D Low</option>
+	<option value="1">Band D High</option>
+	<option value="2">Band D Extended</option>
+	<option value="3">Band E</option>
+	<option value="4">Band F</option>
+	<option value="5">Band C4</option>
+	<option value="6">Band H</option>
+    </select>
+<br>
+
+<label for="switch">RF Switch: </label>
+    <select id="switch">
+	<option value="hi">Hi</option>
+	<option value="low">Low</option>
+    </select>
+<br>
+
+<input type="button" name="submit" value="submit" onclick="update()">
+</form>
+
+<br>
+
+
+
+</blockquote>
+
+
+ 
+
+
+<script>
+
+
+window.onload = function fillfield()
+{
+
+   getchannel("--link","rf_channel","rf_channel");
+   getband("--rf_band","rf_band","band");
+   getpasswd("--password","password","rf_passwd"); // ACTION_TEC
+   getprivacy("--privacy_en","privacy_en","rf_privacy"); // ACTION_TEC
+}
+
+
+function getband(cmdname,field,htmlfield)
+{
+  var xmlttp;
+  var str;
+  var url = new String("/cmd.sh?mocap&get&"+cmdname);
+  var bands = new Array("D Low","D High","D Extended","E","F","C4","H");
+
+console.error(url);
+
+  if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp = new XMLHttpRequest();
+  }
+  else { // code for IE6, IE5
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.open("GET", url, false);
+  xmlhttp.setRequestHeader("If-Modified-Since", "Thu, 1 Jan 1970 00:00:00 GMT"); // ACTION_TEC
+  xmlhttp.send();
+
+         str = xmlhttp.responseText;
+
+         var re = new RegExp (field+"\\s*:\\s*([0-9]*)", "g");
+
+	   var value = re.exec(str)[1];
+
+         PreselectMyItem(value);
+
+}
+
+// ACTION_TEC
+function getpasswd(cmdname,field,htmlfield)
+{
+  var xmlttp;
+  var str;
+  var url = new String("/cmd.sh?mocap&get&"+cmdname);
+
+  if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp = new XMLHttpRequest();
+  }
+  else { // code for IE6, IE5
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.open("GET", url, false);
+  xmlhttp.setRequestHeader("If-Modified-Since", "Thu, 1 Jan 1970 00:00:00 GMT"); // ACTION_TEC
+  xmlhttp.send();
+
+         str = xmlhttp.responseText;
+
+         var re = new RegExp (field+"\\s*:\\s*(\\w*.(?=\\w)\\w*.(?=\\w)\\w*)", "g");
+	   form.rf_passwd.value=re.exec(str)[1];
+
+
+}
+
+// ACTION_TEC
+function getprivacy(cmdname,field,htmlfield)
+{
+  var xmlttp;
+  var str;
+  var url = new String("/cmd.sh?mocap&get&"+cmdname);
+  var myDropdownList = document.form.rf_privacy;
+    
+  if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp = new XMLHttpRequest();
+  }
+  else { // code for IE6, IE5
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.open("GET", url, false);
+  xmlhttp.setRequestHeader("If-Modified-Since", "Thu, 1 Jan 1970 00:00:00 GMT"); // ACTION_TEC
+  xmlhttp.send();
+
+         str = xmlhttp.responseText;
+
+         var re = new RegExp (field+"\\s*:\\s*([0-9]*)", "g");
+
+	   var value = re.exec(str)[1];
+
+    // Loop through all the items
+    for (iLoop = 0; iLoop< myDropdownList.options.length; iLoop++)
+    {    
+	console.error("board value " + value);
+      if (myDropdownList.options[iLoop].value == value)
+      {
+        // Item is found. Set its selected property, and exit the loop
+        myDropdownList.options[iLoop].selected = true;
+        break;
+      }
+    }
+}
+
+function getchannel(cmdname,field,htmlfield)
+{
+  var xmlttp;
+  var str;
+  var url = new String("/cmd.sh?mocap&get&"+cmdname);
+
+  if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp = new XMLHttpRequest();
+  }
+  else { // code for IE6, IE5
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.open("GET", url, false);
+  xmlhttp.setRequestHeader("If-Modified-Since", "Thu, 1 Jan 1970 00:00:00 GMT"); // ACTION_TEC
+  xmlhttp.send();
+
+         str = xmlhttp.responseText;
+
+         var re = new RegExp (field+"\\s*:\\s*(\\w*.(?=\\w)\\w*.(?=\\w)\\w*)", "g");
+	   form.rf_channel.value=re.exec(str)[1]*25;
+
+
+}
+
+  function PreselectMyItem(value)
+  {
+
+    // Get a reference to the drop-down
+    var myDropdownList = document.form.band;
+
+    // Loop through all the items
+    for (iLoop = 0; iLoop< myDropdownList.options.length; iLoop++)
+    {    
+	console.error("board value " + value);
+      if (myDropdownList.options[iLoop].value == value)
+      {
+        // Item is found. Set its selected property, and exit the loop
+        myDropdownList.options[iLoop].selected = true;
+        break;
+      }
+    }
+  }
+
+function update()
+{
+  var xmlttp;
+  var url = new String("/cmd.sh?mocap&set&--rf_band&"+form.band.selectedIndex);
+console.error(url);
+  if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp = new XMLHttpRequest();
+  }
+  else { // code for IE6, IE5
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.open("GET", url, false);
+  xmlhttp.setRequestHeader("If-Modified-Since", "Thu, 1 Jan 1970 00:00:00 GMT"); // ACTION_TEC
+  xmlhttp.send();
+  console.error("band " + form.band.selectedIndex);
+
+
+
+
+  var url = new String("/cmd.sh?mocap&set&--lof&"+form.rf_channel.value);
+console.error(url);
+  if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp = new XMLHttpRequest();
+  }
+  else { // code for IE6, IE5
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.open("GET", url, false);
+  xmlhttp.setRequestHeader("If-Modified-Since", "Thu, 1 Jan 1970 00:00:00 GMT"); // ACTION_TEC
+  xmlhttp.send();
+  console.error("channel " + form.rf_channel.value);
+  
+  // ACTION_TEC
+  var url = new String("/cmd.sh?mocap&set&--restart&--password&"+form.rf_passwd.value);
+console.error(url);
+  if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp = new XMLHttpRequest();
+  }
+  else { // code for IE6, IE5
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.open("GET", url, false);
+  xmlhttp.setRequestHeader("If-Modified-Since", "Thu, 1 Jan 1970 00:00:00 GMT"); // ACTION_TEC
+  xmlhttp.send();
+  console.error("password " + form.rf_passwd.value);
+  
+  // ACTION_TEC
+  var url = new String("/cmd.sh?mocap&set&--restart&--privacy_en&"+form.rf_privacy.value);
+console.error(url);
+  if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp = new XMLHttpRequest();
+  }
+  else { // code for IE6, IE5
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.open("GET", url, false);
+  xmlhttp.setRequestHeader("If-Modified-Since", "Thu, 1 Jan 1970 00:00:00 GMT"); // ACTION_TEC
+  xmlhttp.send();
+  console.error("privacy_en " + form.rf_privacy.value);
+}
+
+
+
+
+</script>
+
+
+
+</body></html>

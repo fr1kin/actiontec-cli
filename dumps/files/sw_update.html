@@ -1,0 +1,71 @@
+
+<!-- saved from url=(0036)http://192.168.144.30/sw_update.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" href="./sw_update_files/stylemain.css" type="text/css">
+<link rel="stylesheet" href="./sw_update_files/colors.css" type="text/css">
+
+<script type="text/javascript">
+
+  window.onload = function () {
+     // ie9 and lower don't support FormData.  Don't show progress counter on these browsers.
+     if (window.FormData)
+        document.getElementById('submitbutton').innerHTML = '<input type="button" name="submit" value="Upload" onclick="DoUpload()" \>'
+     else
+        document.getElementById('submitbutton').innerHTML = '<input type="submit" name="submit" value="Upload" \>'
+  }
+
+  function DoUpload()
+  {
+     var xhr;
+     var fd;
+
+     xhr = new XMLHttpRequest();
+     
+     fd = new FormData(document.getElementById('form1'));
+
+     xhr.upload.addEventListener("progress", uploadProgress, false);
+     xhr.upload.addEventListener("load", uploadComplete, false);
+     xhr.open("POST", "/update.sh", true);
+     xhr.send(fd);
+  }
+  
+  function uploadProgress(evt) {
+    if (evt.lengthComputable) {
+      var percentComplete = Math.round(evt.loaded *100/evt.total);
+      document.getElementById('progressNumber').innerHTML = 'Progress: ' + percentComplete.toString() + '%';
+    }
+    else
+      document.getElementById('progressNumber').innerHTML = "Can't compute length";
+  }
+
+  function uploadComplete(evt) {
+      document.getElementById('progressNumber').innerHTML = 'Done. Rebooting...';
+  }
+
+</script>
+
+</head>
+<body>
+
+
+
+  <blockquote>
+    <form id="form1" action="http://192.168.144.30/update.sh" method="post" enctype="multipart/form-data">
+    <div class="row">
+      <br>
+      <b>Software Update</b><br>
+      <label for="fileToUpload">SW Update: </label>
+      <input type="file" name="fileToUpload" id="fileToUpload" \="">
+    </div>
+    <br>
+    <div id="submitbutton" class="row"><input type="button" name="submit" value="Upload" onclick="DoUpload()"></div>
+    <p style="font-size:larger">
+      </p><div id="progressNumber"></div>
+    <p></p>
+    <br>
+    <br>
+    </form>
+  </blockquote>
+
+
+</body></html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!-- saved from url=(0032)http://192.168.144.30/nodes.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+
+
+
+
+<link rel="stylesheet" href="./nodes_files/stylemain.css" type="text/css">
+<link rel="stylesheet" href="./nodes_files/colors.css" type="text/css">
+
+
+</head>
+<body>
+
+
+<blockquote>
+<form> 
+<br>
+<b>Node Info</b><br>
+
+<table id="nodeinfo" border="1" cellpadding="3" cellspacing="0">
+<tbody><tr>
+   <td class="hd" align="center">NC</td>
+   <td class="hd" align="center">Node ID</td>
+   <td class="hd" align="center">MAC Address</td>
+   <td class="hd" align="center">SNR<br>dB</td>
+   <td class="hd" align="center">RX Phy Rate<br>Mbps</td>
+   <td class="hd" align="center">RX Power<br>dBm</td>
+   <td class="hd" align="center">TX Power<br>dBm</td>
+   <td class="hd" align="center">PER</td>
+   <td class="hd" align="center">Bit Loading</td>
+</tr>
+<tr><td>*</td><td>0</td><td>f8:e4:fb:32:17:36</td><td></td></tr></tbody></table>
+
+<br>
+
+
+</form>
+
+</blockquote>
+
+
+ 
+
+
+<script>
+
+window.onload = function go(){
+   fillfield();
+}
+
+function fillfield()
+{
+   var nodemask = getfield_num("--net", "nodes_usable_bitmask");
+   var nc = getfield_num("--net", "nc_node_id");
+   var nodeid = getfield_num("--net", "node_id");
+   var i = 0;
+   var table = document.getElementById("nodeinfo");
+   
+   nodemask |= (1<<nodeid);
+
+   while (nodemask > 0)
+   {
+      if (nodemask & 1 != 0)
+      {
+         var row = table.insertRow();
+         var cell = row.insertCell(0);
+         if (i == nc)
+         cell.innerHTML = "*";
+
+         cell = row.insertCell(1);
+         cell.innerHTML = i;
+
+         cell = row.insertCell(2);
+         cell.innerHTML = getfield_mac("--gen_node_status&"+i, "eui");
+
+         if (i==nodeid)
+         {
+            cell = row.insertCell(3);
+            cell.innerHTML = "Current Node";
+            cell.colSpan = "5";
+         }
+         else
+         {
+            cell = row.insertCell(3);
+            cell.innerHTML = getfield_num("--gen_node_ext_status&index&"+i+"&profile_type&7", "avg_snr");
+
+            cell = row.insertCell(4);
+            cell.innerHTML = getfield_num("--gen_node_ext_status&index&"+i+"&profile_type&7", "phy_rate");
+
+            cell = row.insertCell(5);
+            cell.innerHTML = getfield_num("--gen_node_ext_status&index&"+i+"&profile_type&7", "rx_power");
+
+            cell = row.insertCell(6);
+            cell.innerHTML = getfield_num("--gen_node_ext_status&index&"+i+"&profile_type&13", "tx_power");
+
+            cell = row.insertCell(7);
+
+
+            var rx_packets = getfield_num("--node_stats&index&"+i, "rx_packets");
+
+            if (rx_packets>0)
+            {
+               var crc = getfield_num("--node_stats_ext&index&"+i, "rx_uc_crc_error");
+               var crcb = getfield_num("--node_stats_ext&index&"+i, "rx_bc_crc_error");
+               var timeout = getfield_num("--node_stats_ext&index&"+i, "rx_uc_timeout_error");
+               var timeoutb = getfield_num("--node_stats_ext&index&"+i, "rx_bc_timeout_error");
+               var per = (Number(crc)+Number(crcb)+Number(timeout)+Number(timeoutb))/Number(rx_packets);
+               cell.innerHTML = per.toExponential();
+            }
+            else
+               cell.innerHTML = "0";
+
+
+            cell = row.insertCell(8);
+            cell.innerHTML = "<canvas id=\"bitloading"+i+"\" width=\"256\" height=\"110\"" +
+              "style=\"border:1px solid #000000;\" >" +
+              "</canvas>";
+            
+            var c = document.getElementById("bitloading"+i);
+            var ctx = c.getContext("2d");
+            var bitloading = getfield_bitloading("--gen_node_ext_status&index&"+i+"&profile_type&7","bit_loading\\[64\\]");
+
+            ctx.beginPath();
+            ctx.strokeStyle = "#C0C0C0";
+            ctx.lineWidth=1
+            for (j=0;j<=10;j++)
+            {
+              ctx.moveTo(0, 110-j*10);
+              ctx.lineTo(255, 110-j*10);
+            }
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.strokeStyle = "#000000";
+
+            for (j=0;j<512;j++)
+            {
+               if (bitloading.charAt(j) == 'a')
+                  ctx.arc(j/2,10,1,0,2*Math.PI);
+               else
+                  ctx.arc(j/2,110-bitloading.charAt(j)*10,1,0,2*Math.PI);
+
+            }
+            ctx.stroke();
+
+         }
+      }
+
+      nodemask = nodemask / 2;
+      i++;
+   }
+}
+
+function getfield_num(cmdname,field)
+{
+  var xmlttp;
+  var str;
+  var url = new String("/cmd.sh?mocap&get&"+cmdname);
+
+  if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp = new XMLHttpRequest();
+  }
+  else { // code for IE6, IE5
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.open("GET", url, false);
+  xmlhttp.send();
+
+  str = xmlhttp.responseText;
+
+
+  var re = new RegExp (field+"\\s*:\\s*(-?\\d*)", "g");
+
+  return re.exec(str)[1];
+}
+
+function getfield_mac(cmdname,field)
+{
+  var xmlttp;
+  var str;
+  var url = new String("/cmd.sh?mocap&get&"+cmdname);
+
+  if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp = new XMLHttpRequest();
+  }
+  else { // code for IE6, IE5
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.open("GET", url, false);
+  xmlhttp.send();
+
+  str = xmlhttp.responseText;
+
+  var re = new RegExp (field+"\\s*:\\s*(..:..:..:..:..:..)", "g");
+
+  return re.exec(str)[1];
+}
+
+
+function getfield_bitloading(cmdname,field)
+{
+  var xmlttp;
+  var str;
+  var url = new String("/cmd.sh?mocap&get&"+cmdname);
+
+  if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp = new XMLHttpRequest();
+  }
+  else { // code for IE6, IE5
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.open("GET", url, false);
+  xmlhttp.send();
+
+  str = xmlhttp.responseText;
+
+  var re = new RegExp (field+"\\s*:\\s*\\n.*:\\s*(.*)\\n.*:\\s*(.*)\\n.*:\\s*(.*)\\n.*:\\s*(.*)\\n.*:\\s*(.*)\\n.*:\\s*(.*)\\n.*:\\s*(.*)\\n.*:\\s*(.*)\\n.*:\\s*(.*)\\n.*:\\s*(.*)\\n.*:\\s*(.*)\\n.*:\\s*(.*)\\n.*:\\s*(.*)\\n.*:\\s*(.*)\\n.*:\\s*(.*)\\n.*:\\s*(.*)", "gm");
+
+
+  out = "";
+  m = re.exec(str);
+  out = m[1] +
+    m[2] +
+    m[3] +
+    m[4] +
+    m[5] +
+    m[6] +
+    m[7] +
+    m[8] +
+    m[9] +
+    m[11] +
+    m[11] +
+    m[12] +
+    m[13] +
+    m[14] +
+    m[15] +
+    m[16];
+  return out;
+}
+
+
+
+</script>
+</body></html>
