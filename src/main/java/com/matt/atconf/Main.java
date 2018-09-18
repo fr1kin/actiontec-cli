@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
@@ -96,6 +97,17 @@ public class Main {
                 long to = Utils.parseAddress(ss[2]);
                 String type = ss[3];
                 String output = ss[4];
+                String fmt = ss.length > 5 ? ss[5] : "range";
+
+                switch (fmt.charAt(0)) {
+                    case 'b':
+                        // to = number of bytes from start
+                        to = start + to;
+                    case 'r':
+                    default:
+                        break;
+
+                }
 
                 switch (type.charAt(0)) {
                     case 'd':
@@ -111,9 +123,28 @@ public class Main {
 
                 Utils.dumpMemoryRangeToFile(start, to, type, ROOT_PATH.resolve(output));
             } catch (ArrayIndexOutOfBoundsException e) {
-                System.err.println("format: dump <start-addr> <end-addr> <3450|dump|flash>");
+                System.err.println("format: dump <start-addr> <end-addr> <3450|dump|flash> <output> [range|bytes]");
             } catch (Throwable t) {
                 System.err.println(t.getClass().getSimpleName() + ": " + t.getMessage());
+            }
+        }
+        else if(command.toLowerCase().startsWith("bin")) {
+            String[] ss = command.trim().split(" ");
+            try {
+                long start = Utils.parseAddress(ss[1]);
+                long to = Utils.parseAddress(ss[2]);
+                Path input = ROOT_PATH.resolve(ss[3]);
+                Path output = ROOT_PATH.resolve(ss[4]);
+
+                if(!Files.exists(input)) {
+                    System.err.println("provided input file does not exist");
+                    return;
+                }
+
+                System.out.println("converting dump to binary...");
+                Utils.createBinaryFileFromMemoryDump(start, to, input, output);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.err.println("format: bin <start-addr> <end-addr> <in-mem-dump> <out-bin>");
             }
         }
         else if(command.toLowerCase().startsWith("test")) {

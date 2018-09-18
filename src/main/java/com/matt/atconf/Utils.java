@@ -3,17 +3,21 @@ package com.matt.atconf;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
     public static final Pattern EXTRA_SHELL_HELP_GROUPS = Pattern.compile("(.*?)[\\s{2,}|\\t]+--\\s?(.*)");
+    public static final Pattern EXTRACT_BINARY = Pattern.compile("([0-9a-f]{8})\\s|\\s([0-9A-F|\\s\\s]{2})\\s([0-9A-F|\\s\\s]{2})\\s([0-9A-F|\\s\\s]{2})\\s([0-9A-F|\\s\\s]{2})\\s([0-9A-F|\\s\\s]{2})\\s([0-9A-F|\\s\\s]{2})\\s([0-9A-F|\\s\\s]{2})\\s([0-9A-F|\\s\\s]{2})\\s([0-9A-F|\\s\\s]{2})\\s([0-9A-F|\\s\\s]{2})\\s([0-9A-F|\\s\\s]{2})\\s([0-9A-F|\\s\\s]{2})\\s([0-9A-F|\\s\\s]{2})\\s([0-9A-F|\\s\\s]{2})\\s([0-9A-F|\\s\\s]{2})\\s([0-9A-F|\\s\\s]{2})");
 
     private static String actiontecHost = null;
 
@@ -125,8 +129,11 @@ public class Utils {
     public static void dumpMemoryRangeToFile(long startAddr, long endAddr, String type, Path dump) {
         final long MEM_STEP = 0x80;
 
-        startAddr = Math.max(0L, Math.min(startAddr, 4294967295L));
-        endAddr = Math.max(0L, Math.min(endAddr, 4294967295L));
+        startAddr &= 4294967280L;
+        endAddr &= 4294967280L;
+
+        startAddr = clampAddress32(startAddr);
+        endAddr = clampAddress32(endAddr);
 
         if(startAddr >= endAddr)
             return;
@@ -157,5 +164,53 @@ public class Utils {
         }
         System.out.println();
         System.out.println("success");
+    }
+
+    public static void createBinaryFileFromMemoryDump(long startAddr, long endAddr, Path in, Path out) {
+        try {
+            Files.write(out, getDumpBytes(startAddr, endAddr, in), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+            System.out.println("conversion successful");
+        } catch (Throwable t) {
+            System.err.println("error converting dump: " + t.getClass().getSimpleName() + " - " + t.getMessage());
+        }
+    }
+
+    private static byte[] getDumpBytes(long startAddr, long endAddr, Path dump) throws IOException {
+        Scanner scanner = new Scanner(new String(Files.readAllBytes(dump)));
+
+        int count = 0;
+        ByteBuffer buffer = ByteBuffer.allocate((int)Files.size(dump)); // should be more than enough because we wont use all the data this file uses
+        l0: while(scanner.hasNextLine()) {
+            String next = scanner.nextLine();
+            if(next.trim().isEmpty())
+                continue;
+
+            Matcher matcher = EXTRACT_BINARY.matcher(next);
+            if(matcher.find()) {
+                long address = Long.parseUnsignedLong(matcher.group(1), 16);
+                if(matcher.find()) {
+                    for (int i = 0; i < 16; ++i) {
+                        if (endAddr < address + i)
+                            break l0; // stop processing here
+                        else if (address + i >= startAddr) {
+                            String grp = matcher.group(i + 2);
+                            byte value;
+                            if (grp.matches("\\s{2}")) {
+                                if (count == 0) continue;
+                                value = Byte.MAX_VALUE;
+                            } else value = (byte) Integer.parseUnsignedInt(grp, 16);
+
+                            buffer.put(value);
+                            ++count;
+                        }
+                    }
+                }
+            }
+        }
+        return Arrays.copyOfRange(buffer.array(), 0, count);
+    }
+
+    private static long clampAddress32(long address) {
+        return Math.max(0L, Math.min(address, 4294967295L));
     }
 }
